@@ -19,18 +19,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
-    private String sobrenome;
+    private String firstName;
+    private String lastName;
 
     @Column(unique = true)
-    private String documento;
+    private String document;
 
     @Column(unique = true)
     private String email;
 
-    private String senha;
+    private String password;
 
-    private BigDecimal saldo;
+    private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
     private UserType userType;
