@@ -40,18 +40,9 @@ public class TransactionService {
             throw new Exception("Transação não autorizada.");
         }
 
-        Transaction newTransaction = new Transaction();
-        newTransaction.setSender(sender);
-        newTransaction.setReceiver(receiver);
-        newTransaction.setAmount(transaction.value());
-        newTransaction.setTimestamp(LocalDateTime.now());
+        Transaction newTransaction = this.saveNewTransaction(sender, receiver, transaction.value());
 
-        sender.setBalance(sender.getBalance().subtract(transaction.value()));
-        receiver.setBalance(receiver.getBalance().add(transaction.value()));
-
-        this.transactionRepository.save(newTransaction);
-        this.userService.saveUser(sender);
-        this.userService.saveUser(receiver);
+        this.updateUsersBalances(sender,receiver,transaction.value());
 
         this.notificationService.sendNotification(sender, "Transação realizada com sucesso!");
         this.notificationService.sendNotification(receiver, "Transação recebida com sucesso!");
@@ -75,4 +66,21 @@ public class TransactionService {
         return AllTransactions;
     }
 
+    public Transaction saveNewTransaction(User sender, User receiver, BigDecimal amount){
+        Transaction newTransaction = new Transaction();
+        newTransaction.setSender(sender);
+        newTransaction.setReceiver(receiver);
+        newTransaction.setAmount(amount);
+        newTransaction.setTimestamp(LocalDateTime.now());
+        this.transactionRepository.save(newTransaction);
+        return newTransaction;
+    }
+
+    public void updateUsersBalances(User sender, User receiver, BigDecimal amount){
+        sender.setBalance(sender.getBalance().subtract(amount));
+        receiver.setBalance(receiver.getBalance().add(amount));
+
+        this.userService.saveUser(sender);
+        this.userService.saveUser(receiver);
+    }
 }
