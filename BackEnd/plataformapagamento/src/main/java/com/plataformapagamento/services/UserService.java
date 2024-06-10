@@ -23,7 +23,7 @@ public class UserService {
     }
 
    public User findUserById(Long id) throws Exception{
-        User user = this.userRepository.findUserById(id.toString()).orElseThrow(()-> new Exception("Usuario nao encontrado."));
+        User user = this.userRepository.findUserById(id).orElseThrow(()-> new Exception("Usuario nao encontrado."));
         return user;
     }
 
