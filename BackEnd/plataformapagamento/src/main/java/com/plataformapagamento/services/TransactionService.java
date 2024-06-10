@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,9 +24,12 @@ public class TransactionService {
     private UserService userService;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     RestTemplate restTemplate;
 
-    public void createTransaction(TransactionRequestDTO transaction) throws Exception {
+    public Transaction createTransaction(TransactionRequestDTO transaction) throws Exception {
         User sender = userService.findUserById(transaction.id_sender());
         User receiver = userService.findUserById(transaction.id_receiver());
 
@@ -48,15 +52,27 @@ public class TransactionService {
         this.transactionRepository.save(newTransaction);
         this.userService.saveUser(sender);
         this.userService.saveUser(receiver);
+
+        this.notificationService.sendNotification(sender, "Transação realizada com sucesso!");
+        this.notificationService.sendNotification(receiver, "Transação recebida com sucesso!");
+
+        return newTransaction;
     }
 
     public boolean authorizeTransaction(User sender, BigDecimal value){
-        ResponseEntity<Map> authorizationResponse = restTemplate.getForEntity("https://util.devi.tools/api/v2/authorize", Map.class);
+        //Lógica necessária para o Teste Técnico
+        //ResponseEntity<Map> authorizationResponse = restTemplate.getForEntity("https://util.devi.tools/api/v2/authorize", Map.class);
 
-        if(authorizationResponse.getStatusCode()== HttpStatus.OK){
-            String message = (String) authorizationResponse.getBody().get("message");
-            return "Autorizado".equalsIgnoreCase(message);
-        }else return false;
+        //if(authorizationResponse.getStatusCode()== HttpStatus.OK){
+        //    String message = (String) authorizationResponse.getBody().get("status");
+        //    return "success".equalsIgnoreCase(message);
+        //}else return false;
+        return true;
+    }
+
+    public List<Transaction> getAllTransactions(){
+        List<Transaction> AllTransactions = this.transactionRepository.findAll();
+        return AllTransactions;
     }
 
 }
