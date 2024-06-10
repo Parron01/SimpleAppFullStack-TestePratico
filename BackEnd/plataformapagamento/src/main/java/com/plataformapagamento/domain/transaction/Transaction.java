@@ -7,8 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "transactions")
 @Table(name = "transactions")
@@ -20,7 +19,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private BigDecimal valor;
+    private BigDecimal amount;
 
     @ManyToOne
     @JoinColumn(name="sender_id")
@@ -28,5 +27,5 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name="receiver_id")
     private User receiver;
-    private LocalTime timestamp;
+    private LocalDateTime timestamp;
 }
