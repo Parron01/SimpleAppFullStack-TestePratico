@@ -1,7 +1,7 @@
 # Teste Prático Back-End
 
-Este projeto faz parte do desafio técnico público da PicPay. O objetivo é criar uma plataforma de pagamentos simplificada, permitindo depósitos e transferências entre usuários.
-
+Este projeto faz parte do desafio técnico público da PicPay. 
+O objetivo é criar uma plataforma de pagamentos simplificada, permitindo depósitos e transferências entre usuários e praticar os conhecimentos de back-end.
 ## Funcionalidades
 
 - **Usuários Comuns**: Podem enviar e receber transferências.
@@ -11,10 +11,10 @@ Este projeto faz parte do desafio técnico público da PicPay. O objetivo é cri
 
 ## Tecnologias Utilizadas
 
-- **Linguagem**: [Especificar linguagem e versão]
-- **Framework**: [Especificar framework]
-- **Banco de Dados**: [Especificar banco de dados]
-- **Outras Ferramentas**: [Docker, testes unitários, etc.]
+- **Linguagem**: Java
+- **Framework**: Spring 
+- **Banco de Dados**: H2 Database
+- **Outras Ferramentas**: APIs RestFull [Docker, testes unitários, etc.]
 
 ## Como Executar
 
@@ -26,14 +26,11 @@ Este projeto faz parte do desafio técnico público da PicPay. O objetivo é cri
     ```sh
     cd back-end
     ```
-3. Instale as dependências:
-    ```sh
-    [Comando de instalação de dependências]
-    ```
-4. Execute o projeto:
-    ```sh
-    [Comando para executar o projeto]
-    ```
+3. Instale as dependências:\
+    `Projeto utiliza maven. `\
+`Garanta que todas as dependências do projeto estejam instaladas.`
+4. Execute o projeto:\
+    ``Através da classe principal PlataformapagamentoApplication.java``
 
 ## Testes
 
