@@ -1,10 +1,11 @@
-package com.plataformapagamento.services;
+package com.plataformapagamento.adapters.services;
 
-import com.plataformapagamento.DTOs.UserRequestDTO;
+import com.plataformapagamento.adapters.DTOs.UserRequestDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.domain.user.UserType;
-import com.plataformapagamento.repositories.UserRepository;
+import com.plataformapagamento.adapters.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public void ValidateTransaction(User user, BigDecimal amount) throws Exception {
-        if(user.getUserType() == UserType.Lojista){
+        if(user.getUserType() == UserType.LOJISTA){
             throw new Exception("Lojistas não estão autorizados a realizar tranferência.");
         }
         if(user.getBalance().compareTo(amount) < 0){
@@ -32,6 +33,8 @@ public class UserService {
 
     public User createUser(UserRequestDTO data){
         User newUser = new User(data);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        newUser.setPassword(encryptedPassword);
         this.userRepository.save(newUser);
         return newUser;
     }

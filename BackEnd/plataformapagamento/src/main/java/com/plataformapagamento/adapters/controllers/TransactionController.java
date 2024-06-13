@@ -1,8 +1,8 @@
-package com.plataformapagamento.controllers;
+package com.plataformapagamento.adapters.controllers;
 
-import com.plataformapagamento.DTOs.TransactionRequestDTO;
+import com.plataformapagamento.adapters.DTOs.TransactionRequestDTO;
 import com.plataformapagamento.domain.transaction.Transaction;
-import com.plataformapagamento.services.TransactionService;
+import com.plataformapagamento.adapters.services.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Transaction> createTransaction(@RequestBody @Valid TransactionRequestDTO body) throws Exception {
         Transaction newTransaction = transactionService.createTransaction(body);
 

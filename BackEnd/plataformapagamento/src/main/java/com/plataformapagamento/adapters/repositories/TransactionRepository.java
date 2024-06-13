@@ -1,4 +1,4 @@
-package com.plataformapagamento.repositories;
+package com.plataformapagamento.adapters.repositories;
 
 import com.plataformapagamento.domain.transaction.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;

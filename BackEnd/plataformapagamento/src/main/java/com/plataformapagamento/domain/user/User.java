@@ -1,10 +1,15 @@
 package com.plataformapagamento.domain.user;
 
-import com.plataformapagamento.DTOs.UserRequestDTO;
+import com.plataformapagamento.adapters.DTOs.UserRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
 
 @Entity(name="users")
 @Table(name="users")
@@ -14,7 +19,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @EqualsAndHashCode(of="id")
 
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +50,36 @@ public class User {
         this.balance = data.balance();
         this.userType = data.userType();
 
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.userType == UserType.COMUM) return List.of(new SimpleGrantedAuthority("ROLE_COMUM"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_LOJISTA"));
+    }
+
+    @Override
+    public String getUsername() {
+        return document;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

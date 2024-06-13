@@ -1,6 +1,6 @@
 package com.plataformapagamento.infra;
 
-import com.plataformapagamento.DTOs.ExceptionResponseDTO;
+import com.plataformapagamento.adapters.DTOs.ExceptionResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
