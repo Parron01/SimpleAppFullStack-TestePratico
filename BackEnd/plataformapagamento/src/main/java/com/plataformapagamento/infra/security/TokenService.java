@@ -32,18 +32,17 @@ public class TokenService {
     }
 
     public String validateToken(String token) {
-        try{
+        try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer("plataforma-pagamento")
                     .build()
                     .verify(token)
                     .getSubject();
-        }catch(JWTVerificationException exception){
-            return ""+exception;
+        } catch (JWTVerificationException exception) {
+            return "";
         }
     }
-
     private Instant getExpirationDate(){
         return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-04:00"));
     }

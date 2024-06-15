@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/users").hasAnyRole("COMUM","LOJISTA")
                         .requestMatchers(HttpMethod.GET, "/transaction").hasAnyRole("COMUM", "LOJISTA")
                         .requestMatchers(HttpMethod.POST, "/transaction/create").hasRole("COMUM")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

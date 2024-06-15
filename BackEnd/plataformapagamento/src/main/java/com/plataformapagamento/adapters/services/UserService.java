@@ -1,10 +1,12 @@
 package com.plataformapagamento.adapters.services;
 
+import com.plataformapagamento.adapters.DTOs.UserDeleteDTO;
 import com.plataformapagamento.adapters.DTOs.UserRequestDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.domain.user.UserType;
 import com.plataformapagamento.adapters.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +33,13 @@ public class UserService {
         return user;
     }
 
-    public User createUser(UserRequestDTO data){
+    public User createUser(UserRequestDTO data) throws Exception {
         User newUser = new User(data);
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         newUser.setPassword(encryptedPassword);
-        this.userRepository.save(newUser);
+        try{ this.userRepository.save(newUser); }
+        catch(DataIntegrityViolationException e){throw new Exception("Usuario já cadastrado.");}
+
         return newUser;
     }
     public List<User> getAllUser(){
@@ -45,5 +49,14 @@ public class UserService {
 
     public void saveUser(User user){
         this.userRepository.save(user);
+    }
+
+    public User deleteUser(UserDeleteDTO data) throws Exception {
+        User deletedUser = this.findUserById(data.id());
+
+        try{ this.userRepository.deleteById(data.id()); }
+        catch(DataIntegrityViolationException e){throw new Exception("Não é possível deletar o usuario.");}
+
+        return deletedUser;
     }
 }
