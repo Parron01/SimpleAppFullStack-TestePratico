@@ -1,4 +1,4 @@
-package com.plataformapagamento.adapters.DTOs;
+package com.plataformapagamento.adapters.DTOs.transaction;
 
 import jakarta.validation.constraints.NotBlank;
 

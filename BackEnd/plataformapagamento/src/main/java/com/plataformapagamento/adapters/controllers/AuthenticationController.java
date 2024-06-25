@@ -1,7 +1,7 @@
 package com.plataformapagamento.adapters.controllers;
 
-import com.plataformapagamento.adapters.DTOs.LoginDTO;
-import com.plataformapagamento.adapters.DTOs.LoginResponseDTO;
+import com.plataformapagamento.adapters.DTOs.authentication.LoginDTO;
+import com.plataformapagamento.adapters.DTOs.authentication.LoginResponseDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.infra.security.TokenService;
 import jakarta.validation.Valid;
