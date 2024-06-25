@@ -1,4 +1,4 @@
-package com.plataformapagamento.adapters.DTOs;
+package com.plataformapagamento.adapters.DTOs.transaction;
 
 
 
@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 
 public record TransactionRequestDTO(
+        Long idTransaction,
         @NotNull(message = "Id do sender é necessário.")
         Long id_sender,
         @NotNull(message = "Id do receiver é necessário.")
@@ -15,5 +16,6 @@ public record TransactionRequestDTO(
         @NotNull(message = "Valor da transação é necessário.")
         BigDecimal value
 ) {
+
 
 }

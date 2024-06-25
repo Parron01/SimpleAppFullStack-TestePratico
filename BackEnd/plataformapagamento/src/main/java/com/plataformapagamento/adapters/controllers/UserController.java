@@ -1,7 +1,8 @@
 package com.plataformapagamento.adapters.controllers;
 
-import com.plataformapagamento.adapters.DTOs.UserDeleteDTO;
-import com.plataformapagamento.adapters.DTOs.UserRequestDTO;
+import com.plataformapagamento.adapters.DTOs.user.UserDeleteDTO;
+import com.plataformapagamento.adapters.DTOs.user.UserRequestDTO;
+import com.plataformapagamento.adapters.DTOs.user.UserResponseDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.adapters.services.UserService;
 import jakarta.validation.Valid;
@@ -19,15 +20,15 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> listUser(){
-        List<User> users = userService.getAllUser();
+    public ResponseEntity<List<UserResponseDTO>> listUser(){
+        List<UserResponseDTO> users = userService.getAllUser();
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserRequestDTO body) throws Exception {
-        User newuser = userService.createUser(body);
+    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRequestDTO body) throws Exception {
+        UserResponseDTO newuser = userService.createUser(body);
         return new ResponseEntity<>(newuser, HttpStatus.CREATED);
     }
 

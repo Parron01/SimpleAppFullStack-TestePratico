@@ -1,7 +1,8 @@
 package com.plataformapagamento.adapters.services;
 
-import com.plataformapagamento.adapters.DTOs.UserDeleteDTO;
-import com.plataformapagamento.adapters.DTOs.UserRequestDTO;
+import com.plataformapagamento.adapters.DTOs.user.UserDeleteDTO;
+import com.plataformapagamento.adapters.DTOs.user.UserRequestDTO;
+import com.plataformapagamento.adapters.DTOs.user.UserResponseDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.domain.user.UserType;
 import com.plataformapagamento.adapters.repositories.UserRepository;
@@ -33,17 +34,21 @@ public class UserService {
         return user;
     }
 
-    public User createUser(UserRequestDTO data) throws Exception {
+    public UserResponseDTO createUser(UserRequestDTO data) throws Exception {
         User newUser = new User(data);
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         newUser.setPassword(encryptedPassword);
         try{ this.userRepository.save(newUser); }
         catch(DataIntegrityViolationException e){throw new Exception("Usuario já cadastrado.");}
 
-        return newUser;
+
+        return new UserResponseDTO(newUser);
     }
-    public List<User> getAllUser(){
-        List<User> users = this.userRepository.findAll();
+
+    public List<UserResponseDTO> getAllUser(){
+        List<UserResponseDTO> users = this.userRepository.findAll()
+                .stream()
+                .map(UserResponseDTO::new).toList();
         return users;
     }
 

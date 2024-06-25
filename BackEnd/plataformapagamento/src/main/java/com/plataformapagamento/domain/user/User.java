@@ -1,6 +1,6 @@
 package com.plataformapagamento.domain.user;
 
-import com.plataformapagamento.adapters.DTOs.UserRequestDTO;
+import com.plataformapagamento.adapters.DTOs.user.UserRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

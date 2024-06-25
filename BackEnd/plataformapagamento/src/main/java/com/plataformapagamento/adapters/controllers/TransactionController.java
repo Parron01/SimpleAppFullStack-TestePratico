@@ -1,7 +1,7 @@
 package com.plataformapagamento.adapters.controllers;
 
-import com.plataformapagamento.adapters.DTOs.TransactionRequestDTO;
-import com.plataformapagamento.domain.transaction.Transaction;
+import com.plataformapagamento.adapters.DTOs.transaction.TransactionRequestDTO;
+import com.plataformapagamento.adapters.DTOs.transaction.TransactionResponseDTO;
 import com.plataformapagamento.adapters.services.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,23 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping("/create")
-    public ResponseEntity<Transaction> createTransaction(@RequestBody @Valid TransactionRequestDTO body) throws Exception {
-        Transaction newTransaction = transactionService.createTransaction(body);
+    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody @Valid TransactionRequestDTO body) throws Exception {
+        TransactionResponseDTO newTransaction = transactionService.createTransaction(body);
 
         return new ResponseEntity<>(newTransaction, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> listTransactions(){
-        List<Transaction> transactions = transactionService.getAllTransactions();
+    public ResponseEntity<List<TransactionResponseDTO>> listTransactions(){
+        List<TransactionResponseDTO> transactions = transactionService.getAllTransactions();
 
         return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) throws Exception {
+        transactionService.deleteTransactionById(id);
+
+        return ResponseEntity.accepted().build();
     }
 }

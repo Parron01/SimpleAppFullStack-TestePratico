@@ -1,7 +1,8 @@
 package com.plataformapagamento.adapters.services;
 
+import com.plataformapagamento.adapters.DTOs.transaction.TransactionResponseDTO;
 import com.plataformapagamento.domain.transaction.Transaction;
-import com.plataformapagamento.adapters.DTOs.TransactionRequestDTO;
+import com.plataformapagamento.adapters.DTOs.transaction.TransactionRequestDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.adapters.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TransactionService {
     @Autowired
     RestTemplate restTemplate;
 
-    public Transaction createTransaction(TransactionRequestDTO transaction) throws Exception {
+    public TransactionResponseDTO createTransaction(TransactionRequestDTO transaction) throws Exception {
         User sender = userService.findUserById(transaction.id_sender());
         User receiver = userService.findUserById(transaction.id_receiver());
 
@@ -44,7 +45,7 @@ public class TransactionService {
         this.notificationService.sendNotification(sender, "Transação realizada com sucesso!");
         this.notificationService.sendNotification(receiver, "Transação recebida com sucesso!");
 
-        return newTransaction;
+        return new TransactionResponseDTO(newTransaction);
     }
 
     public boolean authorizeTransaction(User sender, BigDecimal value){
@@ -58,8 +59,8 @@ public class TransactionService {
         return true;
     }
 
-    public List<Transaction> getAllTransactions(){
-        List<Transaction> AllTransactions = this.transactionRepository.findAll();
+    public List<TransactionResponseDTO> getAllTransactions(){
+        List<TransactionResponseDTO> AllTransactions = this.transactionRepository.findAll().stream().map(TransactionResponseDTO::new).toList();
         return AllTransactions;
     }
 
@@ -79,5 +80,15 @@ public class TransactionService {
 
         this.userService.saveUser(sender);
         this.userService.saveUser(receiver);
+    }
+
+    public Transaction findById(Long id) throws Exception {
+        Transaction transaction = this.transactionRepository.findById(id).orElseThrow(()-> new Exception("Transaction nao encontrada."));
+        return transaction;
+    }
+
+    public void deleteTransactionById(Long id) throws Exception {
+        Transaction transaction = this.findById(id);
+        transactionRepository.deleteById(id);
     }
 }
