@@ -25,7 +25,8 @@ public class TransactionService {
     private NotificationService notificationService;
 
     @Autowired
-    RestTemplate restTemplate;
+    private AuthorizationService authService;
+
 
     public TransactionResponseDTO createTransaction(TransactionRequestDTO transaction) throws Exception {
         User sender = userService.findUserById(transaction.id_sender());
@@ -33,7 +34,7 @@ public class TransactionService {
 
         userService.ValidateTransaction(sender,transaction.value());
 
-        boolean isAuthorized = this.authorizeTransaction(sender,transaction.value());
+        boolean isAuthorized = authService.authorizeTransaction(sender,transaction.value());
         if(!isAuthorized){
             throw new Exception("Transação não autorizada.");
         }
@@ -48,16 +49,6 @@ public class TransactionService {
         return new TransactionResponseDTO(newTransaction);
     }
 
-    public boolean authorizeTransaction(User sender, BigDecimal value){
-        //Lógica necessária para o Teste Técnico
-        //ResponseEntity<Map> authorizationResponse = restTemplate.getForEntity("https://util.devi.tools/api/v2/authorize", Map.class);
-
-        //if(authorizationResponse.getStatusCode()== HttpStatus.OK){
-        //    String message = (String) authorizationResponse.getBody().get("status");
-        //    return "success".equalsIgnoreCase(message);
-        //}else return false;
-        return true;
-    }
 
     public List<TransactionResponseDTO> getAllTransactions(){
         List<TransactionResponseDTO> AllTransactions = this.transactionRepository.findAll().stream().map(TransactionResponseDTO::new).toList();
@@ -65,11 +56,7 @@ public class TransactionService {
     }
 
     public Transaction saveNewTransaction(User sender, User receiver, BigDecimal amount){
-        Transaction newTransaction = new Transaction();
-        newTransaction.setSender(sender);
-        newTransaction.setReceiver(receiver);
-        newTransaction.setAmount(amount);
-        newTransaction.setTimestamp(LocalDateTime.now());
+        Transaction newTransaction = new Transaction(sender,receiver,amount);
         this.transactionRepository.save(newTransaction);
         return newTransaction;
     }

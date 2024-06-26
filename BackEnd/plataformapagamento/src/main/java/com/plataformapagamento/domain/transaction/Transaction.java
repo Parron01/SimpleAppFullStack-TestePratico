@@ -28,4 +28,12 @@ public class Transaction {
     @JoinColumn(name="receiver_id")
     private User receiver;
     private LocalDateTime timestamp;
+
+    public Transaction(User sender, User receiver, BigDecimal amount){
+        this.sender = sender;
+        this.receiver = receiver;
+        this.amount = amount;
+        this.timestamp = LocalDateTime.now();
+
+    }
 }
