@@ -12,8 +12,8 @@ public record TransactionResponseDTO(
     public TransactionResponseDTO(Transaction transaction){
         this(
                 transaction.getId(),
-                transaction.getReceiver().getId(),
                 transaction.getSender().getId(),
+                transaction.getReceiver().getId(),
                 transaction.getAmount());
     }
 }
