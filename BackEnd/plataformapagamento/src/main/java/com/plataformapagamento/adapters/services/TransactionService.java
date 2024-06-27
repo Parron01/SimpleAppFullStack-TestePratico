@@ -5,6 +5,10 @@ import com.plataformapagamento.domain.transaction.Transaction;
 import com.plataformapagamento.adapters.DTOs.transaction.TransactionRequestDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.adapters.repositories.TransactionRepository;
+import com.plataformapagamento.infra.exceptions.TransactionNotFoundException;
+import com.plataformapagamento.infra.exceptions.UnauthorizedTransactionException;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -34,9 +38,9 @@ public class TransactionService {
 
         userService.ValidateTransaction(sender,transaction.value());
 
-        boolean isAuthorized = authService.authorizeTransaction(sender,transaction.value());
-        if(!isAuthorized){
-            throw new Exception("Transação não autorizada.");
+        boolean isAuthorized = authService.authorizeTransaction(sender, transaction.value());
+        if (!isAuthorized) {
+            throw new UnauthorizedTransactionException("Transação não autorizada.");
         }
 
         Transaction newTransaction = this.saveNewTransaction(sender, receiver, transaction.value());
@@ -55,10 +59,11 @@ public class TransactionService {
         return AllTransactions;
     }
 
-    public Transaction saveNewTransaction(User sender, User receiver, BigDecimal amount){
+    @NotNull
+    public Transaction saveNewTransaction(User sender, User receiver, @DecimalMin(value = "0.01") BigDecimal amount) {
         Transaction newTransaction = new Transaction(sender,receiver,amount);
-        this.transactionRepository.save(newTransaction);
-        return newTransaction;
+        Transaction CreatedTransaction = this.transactionRepository.save(newTransaction);
+        return CreatedTransaction;
     }
 
     public void updateUsersBalances(User sender, User receiver, BigDecimal amount){
@@ -69,9 +74,9 @@ public class TransactionService {
         this.userService.saveUser(receiver);
     }
 
-    public Transaction findById(Long id) throws Exception {
-        Transaction transaction = this.transactionRepository.findById(id).orElseThrow(()-> new Exception("Transaction nao encontrada."));
-        return transaction;
+    public Transaction findById(Long id) throws TransactionNotFoundException {
+        return this.transactionRepository.findById(id)
+                .orElseThrow(() -> new TransactionNotFoundException("Transação não encontrada."));
     }
 
     public void deleteTransactionById(Long id) throws Exception {

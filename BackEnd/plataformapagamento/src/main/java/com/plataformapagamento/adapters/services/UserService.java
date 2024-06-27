@@ -1,11 +1,15 @@
 package com.plataformapagamento.adapters.services;
 
-import com.plataformapagamento.adapters.DTOs.user.UserDeleteDTO;
+import com.plataformapagamento.adapters.DTOs.DeleteDTO;
 import com.plataformapagamento.adapters.DTOs.user.UserRequestDTO;
 import com.plataformapagamento.adapters.DTOs.user.UserResponseDTO;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.domain.user.UserType;
 import com.plataformapagamento.adapters.repositories.UserRepository;
+import com.plataformapagamento.infra.exceptions.InsufficientBalanceException;
+import com.plataformapagamento.infra.exceptions.UnauthorizedUserException;
+import com.plataformapagamento.infra.exceptions.UserNotFoundException;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,15 +26,16 @@ public class UserService {
 
     public void ValidateTransaction(User user, BigDecimal amount) throws Exception {
         if(user.getUserType() == UserType.LOJISTA){
-            throw new Exception("Lojistas não estão autorizados a realizar tranferência.");
+            throw new UnauthorizedUserException("Lojistas não estão autorizados a realizar tranferência.");
         }
-        if(user.getBalance().compareTo(amount) < 0){
-            throw new Exception("Saldo Insuficiente para a transação.");
+        if (user.getBalance().compareTo(amount) < 0) {
+            throw new InsufficientBalanceException("Saldo Insuficiente para a transação.");
         }
     }
 
    public User findUserById(Long id) throws Exception{
-        User user = this.userRepository.findUserById(id).orElseThrow(()-> new Exception("Usuario nao encontrado."));
+        User user = this.userRepository.findUserById(id)
+                .orElseThrow(()-> new UserNotFoundException("Usuario nao encontrado."));
         return user;
     }
 
@@ -51,12 +56,12 @@ public class UserService {
                 .map(UserResponseDTO::new).toList();
         return users;
     }
-
+    @NotNull
     public void saveUser(User user){
         this.userRepository.save(user);
     }
 
-    public User deleteUser(UserDeleteDTO data) throws Exception {
+    public User deleteUser(DeleteDTO data) throws Exception {
         User deletedUser = this.findUserById(data.id());
 
         try{ this.userRepository.deleteById(data.id()); }
