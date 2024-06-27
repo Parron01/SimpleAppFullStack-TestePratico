@@ -7,6 +7,7 @@ import com.plataformapagamento.adapters.repositories.TransactionRepository;
 import com.plataformapagamento.domain.transaction.Transaction;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.domain.user.UserType;
+import com.plataformapagamento.infra.exceptions.TransactionNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,12 +20,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -48,6 +51,9 @@ class TransactionServiceTest {
 
     @Captor
     private ArgumentCaptor<Transaction> transactionArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<User> userArgumentCaptor;
 
     @Autowired
     @InjectMocks
@@ -140,4 +146,199 @@ class TransactionServiceTest {
 
 
     }
+
+    @Nested
+    class getAllTransactions{
+
+        private User sender;
+        private User receiver;
+
+        @BeforeEach
+        void setUp() {
+            sender = new User(1L, "Maria", "Souza", "99999999901", "maria@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+            receiver = new User(2L, "Joao", "Souza", "99999999902", "joao@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+        }
+
+
+        @Test
+        @DisplayName("Should get all transactions successfully")
+        void shouldGetAllTransactionsSuccessfully() throws Exception {
+            // Arrange
+            Transaction transaction1 = new Transaction(sender, receiver, new BigDecimal(50));
+            Transaction transaction2 = new Transaction(sender, receiver, new BigDecimal(30));
+
+            List<Transaction> transactionList = new ArrayList<>();
+            transactionList.add(transaction1);
+            transactionList.add(transaction2);
+
+            when(transactionRepository.findAll()).thenReturn(transactionList);
+
+            // Act
+            List<TransactionResponseDTO> result = transactionService.getAllTransactions();
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(2, result.size());
+
+            List<TransactionResponseDTO> transactionResponseDTOList = transactionList.stream()
+                    .map(TransactionResponseDTO::new)
+                    .toList();
+
+            assertEquals(transactionResponseDTOList, result);
+
+            // Verifica interações
+            verify(transactionRepository, times(1)).findAll();
+
+        }
+    }
+
+    @Nested
+    class saveNewTransaction{
+
+        private User sender;
+        private User receiver;
+
+        @BeforeEach
+        void setUp() {
+            sender = new User(1L, "Maria", "Souza", "99999999901", "maria@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+            receiver = new User(2L, "Joao", "Souza", "99999999902", "joao@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+        }
+
+        @Test
+        @DisplayName("Should save new transaction with data sent successfully")
+        void shouldSaveNewTransactionWithDataSentSuccessfully() {
+            // Arrange
+            BigDecimal amount = new BigDecimal("50.00");
+            Transaction expectedTransaction = new Transaction(sender, receiver, amount);
+
+            // Mock do save do TransactionRepository
+            when(transactionRepository.save(transactionArgumentCaptor.capture())).thenReturn(expectedTransaction);
+
+            // Act
+            Transaction savedTransaction = transactionService.saveNewTransaction(sender, receiver, amount);
+
+            // Assert
+            assertNotNull(savedTransaction);
+            assertEquals(expectedTransaction, savedTransaction);
+
+            // Verifica se o método save foi chamado exatamente uma vez
+            verify(transactionRepository, times(1)).save(any(Transaction.class));
+
+            Transaction capturedTransaction = transactionArgumentCaptor.getValue();
+            assertEquals(expectedTransaction.getSender(), capturedTransaction.getSender());
+            assertEquals(expectedTransaction.getReceiver(), capturedTransaction.getReceiver());
+            assertEquals(expectedTransaction.getAmount(), capturedTransaction.getAmount());
+        }
+    }
+
+    @Nested
+    class updateUsersBalances {
+
+        private User sender;
+        private User receiver;
+
+        @BeforeEach
+        void setUp() {
+            sender = new User(1L, "Maria", "Souza", "99999999901", "maria@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+            receiver = new User(2L, "Joao", "Souza", "99999999902", "joao@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+        }
+
+        @Test
+        @DisplayName("Should update balances correctly")
+        void shouldUpdateBalancesCorrectly() {
+            // Arrange
+            BigDecimal amount = new BigDecimal("50.00");
+            BigDecimal senderInitialBalance = sender.getBalance();
+            BigDecimal receiverInitialBalance = receiver.getBalance();
+
+            // Act
+            transactionService.updateUsersBalances(sender, receiver, amount);
+
+            // Assert
+            assertEquals(senderInitialBalance.subtract(amount), sender.getBalance());
+            assertEquals(receiverInitialBalance.add(amount), receiver.getBalance());
+
+            // Verifica se o método saveUser foi chamado duas vezes, uma para cada usuário
+            verify(userService, times(2)).saveUser(userArgumentCaptor.capture());
+            assertEquals(sender, userArgumentCaptor.getAllValues().get(0));
+            assertEquals(receiver, userArgumentCaptor.getAllValues().get(1));
+        }
+    }
+
+    @Nested
+    class findById {
+
+        private User sender;
+        private User receiver;
+
+        @BeforeEach
+        void setUp() {
+            sender = new User(1L, "Maria", "Souza", "99999999901", "maria@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+            receiver = new User(2L, "Joao", "Souza", "99999999902", "joao@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+        }
+
+        @Test
+        @DisplayName("Should find transaction by ID")
+        void shouldFindTransactionById() throws TransactionNotFoundException {
+            // Arrange
+            Long transactionId = 1L;
+            Transaction mockTransaction = new Transaction(transactionId, new BigDecimal("50.00"),sender, receiver, LocalDateTime.now());
+
+            // Mock repository behavior
+            when(transactionRepository.findById(transactionId)).thenReturn(Optional.of(mockTransaction));
+
+            // Act
+            Transaction foundTransaction = transactionService.findById(transactionId);
+
+            // Assert
+            assertEquals(mockTransaction, foundTransaction);
+        }
+
+        @Test
+        @DisplayName("Should throw TransactionNotFoundException when transaction is not found")
+        void shouldThrowTransactionNotFoundException() {
+            // Arrange
+            Long transactionId = 1L;
+
+            // Mock repository behavior
+            when(transactionRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+            // Act and Assert
+            assertThrows(TransactionNotFoundException.class, () -> transactionService.findById(transactionId));
+        }
+    }
+
+    @Nested
+    class deleteTransactionById {
+
+        private User sender;
+        private User receiver;
+
+        @BeforeEach
+        void setUp() {
+            sender = new User(1L, "Maria", "Souza", "99999999901", "maria@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+            receiver = new User(2L, "Joao", "Souza", "99999999902", "joao@gmail.com", "12345", new BigDecimal(100), UserType.COMUM);
+        }
+
+        @Test
+        @DisplayName("Should delete transaction by ID successfully")
+        void shouldDeleteTransactionByIdSuccessfully() throws TransactionNotFoundException {
+            // Arrange
+            Long transactionId = 1L;
+            Transaction mockTransaction = new Transaction(transactionId, new BigDecimal("50.00"),sender, receiver, LocalDateTime.now());
+
+            // Mock repository behavior
+            when(transactionRepository.findById(transactionId)).thenReturn(Optional.of(mockTransaction));
+
+            // Act
+            assertDoesNotThrow(() -> transactionService.deleteTransactionById(transactionId));
+
+            // Verify
+            verify(transactionRepository, times(1)).deleteById(transactionId);
+        }
+
+    }
+
+
+
 }
