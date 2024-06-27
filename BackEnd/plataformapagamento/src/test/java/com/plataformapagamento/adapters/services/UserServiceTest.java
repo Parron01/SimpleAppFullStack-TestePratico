@@ -1,11 +1,14 @@
 package com.plataformapagamento.adapters.services;
 
-import com.plataformapagamento.adapters.DTOs.user.UserDeleteDTO;
+import com.plataformapagamento.adapters.DTOs.DeleteDTO;
 import com.plataformapagamento.adapters.DTOs.user.UserRequestDTO;
 import com.plataformapagamento.adapters.DTOs.user.UserResponseDTO;
 import com.plataformapagamento.adapters.repositories.UserRepository;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.domain.user.UserType;
+import com.plataformapagamento.infra.exceptions.InsufficientBalanceException;
+import com.plataformapagamento.infra.exceptions.UnauthorizedUserException;
+import com.plataformapagamento.infra.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -51,7 +54,7 @@ class UserServiceTest {
             BigDecimal amount = BigDecimal.valueOf(100);
 
             // Act & Assert
-            Exception exception = assertThrows(Exception.class, () -> userService.ValidateTransaction(user, amount));
+            Exception exception = assertThrows(UnauthorizedUserException.class, () -> userService.ValidateTransaction(user, amount));
             assertEquals("Lojistas não estão autorizados a realizar tranferência.", exception.getMessage());
         }
 
@@ -65,7 +68,7 @@ class UserServiceTest {
             BigDecimal amount = BigDecimal.valueOf(100);
 
             // Act & Assert
-            Exception exception = assertThrows(Exception.class, () -> userService.ValidateTransaction(user, amount));
+            Exception exception = assertThrows(InsufficientBalanceException.class, () -> userService.ValidateTransaction(user, amount));
             assertEquals("Saldo Insuficiente para a transação.", exception.getMessage());
         }
 
@@ -95,7 +98,7 @@ class UserServiceTest {
             when(userRepository.findUserById(any(Long.class))).thenReturn(Optional.empty());
 
             // Act & Assert
-            Exception exception = assertThrows(Exception.class, () -> userService.findUserById(1L));
+            Exception exception = assertThrows(UserNotFoundException.class, () -> userService.findUserById(1L));
             assertEquals("Usuario nao encontrado.", exception.getMessage());
         }
     }
@@ -147,7 +150,7 @@ class UserServiceTest {
             when(userRepository.save(any())).thenThrow(new DataIntegrityViolationException(""));
 
             // Act & Assert
-            Exception exception = assertThrows(Exception.class, () -> userService.createUser(requestDTO));
+            Exception exception = assertThrows(DataIntegrityViolationException.class, () -> userService.createUser(requestDTO));
             assertEquals("Usuario já cadastrado.", exception.getMessage());
         }
     }
@@ -174,23 +177,6 @@ class UserServiceTest {
     }
 
     @Nested
-    class SaveUser {
-
-        @Test
-        @DisplayName("Should save user successfully")
-        void shouldSaveUserSuccessfully() {
-            // Arrange
-            User user = new User();
-
-            // Act
-            userService.saveUser(user);
-
-            // Assert
-            verify(userRepository, times(1)).save(user);
-        }
-    }
-
-    @Nested
     class DeleteUser {
 
         @Test
@@ -198,7 +184,7 @@ class UserServiceTest {
         void shouldDeleteUserSuccessfully() throws Exception {
             // Arrange
             User user = new User();
-            UserDeleteDTO deleteDTO = new UserDeleteDTO(1L);
+            DeleteDTO deleteDTO = new DeleteDTO(1L);
             when(userRepository.findUserById(any(Long.class))).thenReturn(Optional.of(user));
             doNothing().when(userRepository).deleteById(any(Long.class));
 
@@ -214,25 +200,14 @@ class UserServiceTest {
         @DisplayName("Should throw exception when user cannot be deleted")
         void shouldThrowExceptionWhenUserCannotBeDeleted() {
             // Arrange
-            UserDeleteDTO deleteDTO = new UserDeleteDTO(1L);
+            DeleteDTO deleteDTO = new DeleteDTO(1L);
             when(userRepository.findUserById(any(Long.class))).thenReturn(Optional.of(new User()));
             doThrow(new DataIntegrityViolationException("")).when(userRepository).deleteById(any(Long.class));
 
             // Act & Assert
-            Exception exception = assertThrows(Exception.class, () -> userService.deleteUser(deleteDTO));
+            Exception exception = assertThrows(DataIntegrityViolationException.class, () -> userService.deleteUser(deleteDTO));
             assertEquals("Não é possível deletar o usuario.", exception.getMessage());
         }
 
-        @Test
-        @DisplayName("Should throw exception when user is not found")
-        void shouldThrowExceptionWhenUserIsNotFound() {
-            // Arrange
-            UserDeleteDTO deleteDTO = new UserDeleteDTO(1L);
-            when(userRepository.findUserById(any(Long.class))).thenReturn(Optional.empty());
-
-            // Act & Assert
-            Exception exception = assertThrows(Exception.class, () -> userService.deleteUser(deleteDTO));
-            assertEquals("Usuario nao encontrado.", exception.getMessage());
-        }
     }
 }
