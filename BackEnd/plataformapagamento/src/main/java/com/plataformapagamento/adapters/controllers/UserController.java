@@ -1,6 +1,6 @@
 package com.plataformapagamento.adapters.controllers;
 
-import com.plataformapagamento.adapters.DTOs.user.UserDeleteDTO;
+import com.plataformapagamento.adapters.DTOs.DeleteDTO;
 import com.plataformapagamento.adapters.DTOs.user.UserRequestDTO;
 import com.plataformapagamento.adapters.DTOs.user.UserResponseDTO;
 import com.plataformapagamento.domain.user.User;
@@ -33,9 +33,9 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<User> delete (@RequestBody @Valid UserDeleteDTO body) throws Exception {
+    public ResponseEntity<Void> delete (@RequestBody @Valid DeleteDTO body) throws Exception {
         User deletedUser = userService.deleteUser(body);
 
-        return new ResponseEntity<>(deletedUser, HttpStatus.OK);
+        return ResponseEntity.accepted().build();
     }
 }

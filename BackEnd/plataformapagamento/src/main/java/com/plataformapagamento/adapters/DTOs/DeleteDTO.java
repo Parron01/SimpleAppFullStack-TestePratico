@@ -1,8 +1,8 @@
-package com.plataformapagamento.adapters.DTOs.user;
+package com.plataformapagamento.adapters.DTOs;
 
 import jakarta.validation.constraints.NotNull;
 
-public record UserDeleteDTO(
+public record DeleteDTO(
         @NotNull
         Long id
 ) {

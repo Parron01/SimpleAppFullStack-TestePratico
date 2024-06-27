@@ -1,5 +1,6 @@
 package com.plataformapagamento.adapters.controllers;
 
+import com.plataformapagamento.adapters.DTOs.DeleteDTO;
 import com.plataformapagamento.adapters.DTOs.transaction.TransactionRequestDTO;
 import com.plataformapagamento.adapters.DTOs.transaction.TransactionResponseDTO;
 import com.plataformapagamento.adapters.services.TransactionService;
@@ -31,9 +32,9 @@ public class TransactionController {
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) throws Exception {
-        transactionService.deleteTransactionById(id);
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteTransaction(@RequestBody @Valid DeleteDTO body) throws Exception {
+        transactionService.deleteTransactionById(body.id());
 
         return ResponseEntity.accepted().build();
     }
