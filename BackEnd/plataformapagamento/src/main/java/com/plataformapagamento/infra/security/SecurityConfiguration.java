@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/users").hasAnyRole("COMUM","LOJISTA")
                         .requestMatchers(HttpMethod.GET, "/transaction").hasAnyRole("COMUM", "LOJISTA")
                         .requestMatchers(HttpMethod.POST, "/transaction/create").hasRole("COMUM")
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
