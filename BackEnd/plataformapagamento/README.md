@@ -1,39 +1,64 @@
-# Teste Prático Back-End
+# Plataforma de Pagamento Simplificada
 
-Este projeto faz parte do desafio técnico público da PicPay. 
-O objetivo é criar uma plataforma de pagamentos simplificada, permitindo depósitos e transferências entre usuários e praticar os conhecimentos de back-end.
+Este projeto é uma aplicação de exemplo para uma plataforma de pagamentos simplificada, desenvolvida como parte de um desafio técnico. A plataforma permite depósitos e transferências entre usuários, utilizando Java com Spring Framework.
+
 ## Funcionalidades
 
 - **Usuários Comuns**: Podem enviar e receber transferências.
 - **Lojistas**: Podem apenas receber transferências.
 - **Validação de Saldos**: Confirmação de saldo antes das transferências.
-- **Serviço Externo de Autorização**: Verificação adicional para segurança.
+- **Autenticação com JWT**: Segurança através de autenticação JWT.
+- **Autorização por Tipo de Usuário**: Controle de acesso baseado em papéis (roles).
 
 ## Tecnologias Utilizadas
 
-- **Linguagem**: Java
-- **Framework**: Spring 
-- **Banco de Dados**: H2 Database
-- **Outras Ferramentas**: APIs RestFull [Docker, testes unitários, etc.]
+- **Linguagem**: Java 17
+- **Framework**: Spring Framework (Spring Boot, Spring Security)
+- **Banco de Dados**: PostgreSQL (utilizado via Docker Compose)
+- **Ferramentas**: Docker, Maven, JUnit 5, Mockito, MockMVC
+- **Documentação da API**: Swagger (Springdoc OpenAPI)
+
+## Pré-requisitos
+
+Para executar este projeto localmente, certifique-se de ter os seguintes pré-requisitos instalados:
+
+- **Java Development Kit (JDK) 17**: Instalação adequada do JDK.
+- **Docker**: Para executar o banco de dados PostgreSQL via Docker Compose.
+- **PostgreSQL**: Alternativamente, pode usar um banco de dados PostgreSQL instalado localmente.
 
 ## Como Executar
 
-1. Clone o repositório:
-    ```sh
-    git clone <URL_do_repositorio>
-    ```
-2. Navegue até a pasta do projeto:
-    ```sh
-    cd back-end
-    ```
-3. Instale as dependências:\
-    `Projeto utiliza maven. `\
-`Garanta que todas as dependências do projeto estejam instaladas.`
-4. Execute o projeto:\
-    ``Através da classe principal PlataformapagamentoApplication.java``
+1. **Clonar o Repositório**:
+   ```sh
+   git clone <URL_do_repositorio>
+   cd nome_do_projeto
+   ```
+
+2. **Executar PostgreSQL com Docker Compose**:
+    - Certifique-se de ter o Docker instalado e em execução.
+    - No diretório raiz do projeto, execute:
+      ```sh
+      docker-compose up -d
+      ```
+
+3. **Configurar o Projeto**:
+    - Importe o projeto na sua IDE como um projeto Maven.
+    - Certifique-se de que as dependências do Maven sejam baixadas automaticamente.
+
+4. **Executar a Aplicação**:
+    - Execute a aplicação através da classe principal `PlataformapagamentoApplication.java`.
+
+5. **Acessar a Documentação da API**:
+    - Após iniciar o aplicativo, acesse a documentação da API em:
+      ```
+      http://localhost:8080/swagger-ui/index.html
+      ```
 
 ## Testes
 
-Para executar os testes, use o seguinte comando:
-```sh
-[Comando para executar os testes]
+- Este projeto inclui testes unitários para as principais classes de serviço (Services) e controladores (Controllers).
+- Utiliza JUnit 5, Mockito e MockMVC para garantir a qualidade e integridade do código.
+
+## Contribuições
+
+Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests ou abrir issues para melhorias e novas funcionalidades.
