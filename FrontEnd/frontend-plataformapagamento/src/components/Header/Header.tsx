@@ -1,13 +1,13 @@
-import './Header.scss';
+import { HeaderContainer } from "./Header.styles";
 
 function Header(){
     return(
         <>
-        <div className="container">
+        <HeaderContainer>
             <div className="content">
                 <h1>Conteudo do header</h1>
             </div>
-        </div>
+        </HeaderContainer>
         </>
     );
 }
