@@ -21,6 +21,9 @@ export const UsersTableContainer = styled.div`
             & + th{
                 border-left: 1px solid ${props=>props.theme["gray-600"]};
             }
+            &:nth-last-child(2){
+                width: 1.5rem;
+            }
             &:last-child{
                 width: 1.5rem;
             }
@@ -33,7 +36,7 @@ export const UsersTableContainer = styled.div`
                 color: ${props=>props.theme.white};
             }
 
-            &:last-child{
+            &:nth-last-child(2){
                 width: 1.5rem;
                 border-left: 0.6rem solid transparent;
                 background: ${props=>props.theme["gray-900"]};
@@ -41,6 +44,17 @@ export const UsersTableContainer = styled.div`
                 transition: color 0.3s;
                 &:hover{
                     color: ${props=>props.theme["blue-500"]};
+                }
+            }
+
+            &:last-child{
+                width: 1.5rem;
+                border-left: 0.6rem solid transparent;
+                background: ${props=>props.theme["gray-900"]};
+                color: ${props=>props.theme["red-700"]};
+                transition: color 0.3s;
+                &:hover{
+                    color: ${props=>props.theme["red-500"]};
                 }
             }
         }

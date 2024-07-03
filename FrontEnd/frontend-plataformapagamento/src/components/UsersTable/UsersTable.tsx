@@ -1,12 +1,18 @@
+import { NavLink } from "react-router-dom";
 import { UsersTableContainer } from "./UsersTable.styles";
-import { FaPlus, FaEdit  } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 export function UsersTable() {
   return (
     <UsersTableContainer>
-      <button>
-        <FaPlus/>Criar Usuário
-      </button>
+
+      <NavLink to="/register">
+        <button>
+          <FaPlus />Register User
+        </button>
+      </NavLink>
+
+
       <table>
         <thead>
           <tr>
@@ -17,6 +23,7 @@ export function UsersTable() {
             <th>Balance</th>
             <th>UserType</th>
             <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
 
@@ -29,9 +36,20 @@ export function UsersTable() {
             <td>R$1500.00</td>
             <td>Lojista</td>
             <td>
-              <a href="/">
-                <FaEdit size={24}/>
-              </a>
+              <NavLink
+                to="/"
+                title="Update"
+              >
+                <FaEdit size={24} />
+              </NavLink>
+            </td>
+            <td>
+              <NavLink
+                to="/"
+                title="Delete"
+              >
+                <FaTrashAlt size={24} />
+              </NavLink>
             </td>
           </tr>
           <tr>
@@ -42,9 +60,20 @@ export function UsersTable() {
             <td>R$1500.00</td>
             <td>Lojista</td>
             <td>
-              <a href="/">
-                <FaEdit size={24}/>
-              </a>
+              <NavLink
+                to="/"
+                title="Update"
+              >
+                <FaEdit size={24} />
+              </NavLink>
+            </td>
+            <td>
+              <NavLink
+                to="/"
+                title="Delete"
+              >
+                <FaTrashAlt size={24} />
+              </NavLink>
             </td>
           </tr>
           <tr>
@@ -55,9 +84,20 @@ export function UsersTable() {
             <td>R$1500.00</td>
             <td>Lojista</td>
             <td>
-              <a href="/">
-                <FaEdit size={24}/>
-              </a>
+              <NavLink
+                to="/"
+                title="Update"
+              >
+                <FaEdit size={24} />
+              </NavLink>
+            </td>
+            <td>
+              <NavLink
+                to="/"
+                title="Delete"
+              >
+                <FaTrashAlt size={24} />
+              </NavLink>
             </td>
           </tr>
         </tbody>

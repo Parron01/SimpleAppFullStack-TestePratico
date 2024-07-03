@@ -31,6 +31,9 @@ export const HeaderContent = styled.div`
                 &:hover{
                     color: ${props=>props.theme["gray-300"] };
                 }
+                &.active{
+                    color: ${props=> props.theme["gray-100"]};
+                }
             }
         }
 
