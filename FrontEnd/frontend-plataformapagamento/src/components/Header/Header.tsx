@@ -1,16 +1,22 @@
-import { HeaderContainer } from "./Header.styles";
+import { HeaderContainer, HeaderContent } from "./Header.styles";
+import { FaSignInAlt } from 'react-icons/fa';
 
-function Header(){
+export function Header(){
     return(
         <>
         <HeaderContainer>
-            <div className="content">
-                <h1>Conteudo do header</h1>
-            </div>
+            <HeaderContent>
+                <nav>
+                    <a href="/">Users</a>
+                    <a href="/transactions">Transactions</a>
+                    <a href="/">MyTransactions</a>
+                </nav>
+                <button>Login
+                    <FaSignInAlt/>
+                </button>
+            </HeaderContent>
         </HeaderContainer>
         </>
     );
 }
-
-export default Header;
 
