@@ -15,4 +15,27 @@ body{
     background: ${props => props.theme["gray-900"]};
     color: ${props => props.theme["gray-300"]};
 }
+
+
+@media (max-width: 1080px){
+    html{
+        font-size: 93.75%;
+    }
+}
+@media (max-width: 720px){
+    html{
+        font-size: 87.5%;
+    }
+}
+
+button{
+    cursor: pointer;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
+
+
 `
