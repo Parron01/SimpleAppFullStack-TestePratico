@@ -1,18 +1,32 @@
 import { NavLink } from "react-router-dom";
+
 import { TransactionsTableContainer, Table } from "./TransactionsTable.styles";
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { AddButton } from "../AddButton/AddButton";
+import { useState } from "react";
+import { NewTransactionModal } from "../NewTransactionModal/NewTransactionModal";
 
 export function TransactionsTable() {
+    const [isNewTransactionModalOpen,setisNewTransactionModalOpen] = useState(false);
+
+    function handleOpenNewTransactionModal(){
+        setisNewTransactionModalOpen(true);
+    }
+    function handleCloseNewTransactionModal(){
+        setisNewTransactionModalOpen(false);
+    }
+
   return (
     <TransactionsTableContainer>
 
-      <NavLink to="/register">
-        <AddButton>
+        <AddButton onClick={handleOpenNewTransactionModal}>
           <FaPlus/>New Transaction
         </AddButton>
-      </NavLink>
 
+        <NewTransactionModal
+        isOpen={isNewTransactionModalOpen}
+        onRequestClose={handleCloseNewTransactionModal}
+        />
 
       <Table>
         <thead>

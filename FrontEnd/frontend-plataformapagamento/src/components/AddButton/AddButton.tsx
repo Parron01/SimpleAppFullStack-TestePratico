@@ -2,12 +2,13 @@ import { ReactNode } from "react";
 import { Button } from "./AddButton.styles";
 
 interface AddButtonProps{
-    children: ReactNode;
+    children?: ReactNode;
+    onClick?: ()=> void;
 }
 
-export function AddButton({children}:AddButtonProps){
+export function AddButton({children,onClick}:AddButtonProps){
     return(
-        <Button>
+        <Button onClick={onClick}>
             {children}
         </Button>
     );
