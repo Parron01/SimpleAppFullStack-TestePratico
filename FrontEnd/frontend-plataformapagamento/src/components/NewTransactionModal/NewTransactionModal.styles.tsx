@@ -10,7 +10,8 @@ input{
     margin: 1rem 0;
     padding: 1rem;
     background-color: ${props=>props.theme["gray-700"]};
-    border: 1px solid ${props=>props.theme["gray-600"]};
+    color: ${props=>props.theme["gray-300"]};
+    border: 1px solid ${props=>props.theme["gray-700"]};
     border-radius: 0.75rem;
     box-shadow: 1px 1px;
 }

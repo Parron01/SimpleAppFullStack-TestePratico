@@ -58,4 +58,18 @@ a{
     position: relative;
     border-radius: 0.25rem;
 }
+.react-modal-close{
+    position: absolute;
+    right: 1.2rem;
+    top: 1.2rem;
+    border: 0;
+    background: transparent;
+
+    color: ${props=>props.theme["gray-100"]};
+
+    transition: filter 0.2s;
+    &:hover{
+        filter: brightness(0.7);
+    }
+}
 `
