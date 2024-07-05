@@ -17,7 +17,7 @@ export function Header(){
                     title="Transactions">
                     Transactions</NavLink>
                     <NavLink 
-                    to="/"
+                    to="/mytransactions"
                     title="MyTransactions">
                     MyTransactions</NavLink>
                 </nav>
