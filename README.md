@@ -1,4 +1,4 @@
-# Teste Prático
+# Contextualização.
 
 Nesse repositório, há dois projetos separados: um de `Back-End` e outro de `Front-End`.
 
