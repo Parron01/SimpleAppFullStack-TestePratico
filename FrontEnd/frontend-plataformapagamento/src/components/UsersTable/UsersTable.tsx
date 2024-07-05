@@ -1,19 +1,20 @@
 import { NavLink } from "react-router-dom";
-import { UsersTableContainer } from "./UsersTable.styles";
+import { UsersTableContainer,Table } from "./UsersTable.styles";
 import { FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { AddButton } from "../AddButton/AddButton";
 
 export function UsersTable() {
   return (
     <UsersTableContainer>
 
       <NavLink to="/register">
-        <button>
+        <AddButton>
           <FaPlus />Register User
-        </button>
+        </AddButton>
       </NavLink>
 
 
-      <table>
+      <Table>
         <thead>
           <tr>
             <th>Id</th>
@@ -101,7 +102,7 @@ export function UsersTable() {
             </td>
           </tr>
         </tbody>
-      </table>
+      </Table>
     </UsersTableContainer>
   );
 }

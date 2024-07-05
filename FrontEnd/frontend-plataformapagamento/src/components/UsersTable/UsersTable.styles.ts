@@ -1,16 +1,19 @@
 import styled from "styled-components";
 
 export const UsersTableContainer = styled.div`
-    max-width: 84rem;
+    max-width: 88rem;
     margin: 3rem auto 0;
     overflow-x: auto;
+        
+`;
 
-    table{
+export const Table = styled.table`
         width: 100%;
+        margin: 0 auto;
         border-spacing: 0 0.5rem;
         border: 1px solid ${props=> props.theme["gray-700"]};
         border-radius: 0.5rem;
-        padding:1rem 0.5rem;
+        padding:1rem 2rem;
         th{
             color: ${props=>props.theme.white};
             font-weight: 400;
@@ -20,12 +23,6 @@ export const UsersTableContainer = styled.div`
             line-height: 1rem;
             & + th{
                 border-left: 1px solid ${props=>props.theme["gray-600"]};
-            }
-            &:nth-last-child(2){
-                width: 1.5rem;
-            }
-            &:last-child{
-                width: 1.5rem;
             }
         }
         td{
@@ -58,30 +55,4 @@ export const UsersTableContainer = styled.div`
                 }
             }
         }
-        
-    }
-
-    button{
-        margin: 0 0 1rem auto;
-        padding: 1rem 3rem;
-        background: ${props=>props.theme["green-500"]};
-        color: ${props=>props.theme["gray-100"]};
-        border-radius: 0.4rem;
-        border: 1px solid ${props=>props.theme["green-700"]};
-
-        display: flex;
-        align-items: right;
-        gap: 0.5rem;
-
-        font-size: 1.1rem;
-
-        transition: background 0.3s;
-        &:hover{
-            color: ${props=>props.theme["white"]};
-            background: ${props=>props.theme["green-300"]};
-        }
-
-    }
-        
 `;
-        
