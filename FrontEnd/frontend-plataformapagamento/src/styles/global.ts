@@ -72,4 +72,14 @@ a{
         filter: brightness(0.7);
     }
 }
+
+.Toastify__toast--error {
+    background: ${props => props.theme["red-700"]};
+    color: ${props=> props.theme["gray-100"]};
+}
+
+.Toastify__toast--success {
+    background: ${props => props.theme["green-500"]};
+    color: ${props=> props.theme["gray-100"]};
+  }
 `

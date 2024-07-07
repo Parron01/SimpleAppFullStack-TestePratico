@@ -1,10 +1,10 @@
 import { TransactionsTable } from "../components/TransactionsTable/TransactionsTable";
-import { TransactionsModalProvider } from "../hooks/useTransactionModal";
+import { TransactionsProvider } from "../hooks/useTransaction";
 
 export function Transactions() {
   return (
-    <TransactionsModalProvider>
+    <TransactionsProvider>
       <TransactionsTable />
-    </TransactionsModalProvider>
+    </TransactionsProvider>
   );
 }

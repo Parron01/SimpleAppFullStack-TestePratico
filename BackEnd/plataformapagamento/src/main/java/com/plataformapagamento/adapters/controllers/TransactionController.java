@@ -23,6 +23,7 @@ import java.util.List;
 @Tag(name = "Transaction", description = "Endpoints for managing transactions")
 @RestController()
 @RequestMapping("/transaction")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TransactionController {
     @Autowired
     TransactionService transactionService;
@@ -67,9 +68,9 @@ public class TransactionController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ExceptionResponseDTO.class)))
     })
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteTransaction(@RequestBody @Valid DeleteDTO body) throws Exception {
-        transactionService.deleteTransactionById(body.id());
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteTransaction(@PathVariable @Valid Long id) throws Exception {
+        transactionService.deleteTransactionById(id);
         return ResponseEntity.accepted().build();
     }
 }

@@ -23,6 +23,7 @@ import java.util.List;
 @Tag(name = "User", description = "Endpoints for managing users")
 @RestController()
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
     @Autowired
     UserService userService;
@@ -64,9 +65,9 @@ public class UserController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ExceptionResponseDTO.class)))
     })
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> delete(@RequestBody @Valid DeleteDTO body) throws Exception {
-        User deletedUser = userService.deleteUser(body);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable @Valid Long id) throws Exception {
+        userService.deleteUser(id);
         return ResponseEntity.accepted().build();
     }
 }

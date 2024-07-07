@@ -61,10 +61,10 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public User deleteUser(DeleteDTO data) throws Exception {
-        User deletedUser = this.findUserById(data.id());
+    public User deleteUser(Long id) throws Exception {
+        User deletedUser = this.findUserById(id);
 
-        try{ this.userRepository.deleteById(data.id()); }
+        try{ this.userRepository.deleteById(id); }
         catch(DataIntegrityViolationException e){throw new DataIntegrityViolationException("Não é possível deletar o usuario.");}
 
         return deletedUser;

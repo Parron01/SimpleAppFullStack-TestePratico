@@ -184,12 +184,11 @@ class UserServiceTest {
         void shouldDeleteUserSuccessfully() throws Exception {
             // Arrange
             User user = new User();
-            DeleteDTO deleteDTO = new DeleteDTO(1L);
             when(userRepository.findUserById(any(Long.class))).thenReturn(Optional.of(user));
             doNothing().when(userRepository).deleteById(any(Long.class));
 
             // Act
-            User result = userService.deleteUser(deleteDTO);
+            User result = userService.deleteUser(1L);
 
             // Assert
             assertNotNull(result);
@@ -200,12 +199,11 @@ class UserServiceTest {
         @DisplayName("Should throw exception when user cannot be deleted")
         void shouldThrowExceptionWhenUserCannotBeDeleted() {
             // Arrange
-            DeleteDTO deleteDTO = new DeleteDTO(1L);
             when(userRepository.findUserById(any(Long.class))).thenReturn(Optional.of(new User()));
             doThrow(new DataIntegrityViolationException("")).when(userRepository).deleteById(any(Long.class));
 
             // Act & Assert
-            Exception exception = assertThrows(DataIntegrityViolationException.class, () -> userService.deleteUser(deleteDTO));
+            Exception exception = assertThrows(DataIntegrityViolationException.class, () -> userService.deleteUser(1L));
             assertEquals("Não é possível deletar o usuario.", exception.getMessage());
         }
 

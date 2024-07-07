@@ -104,7 +104,7 @@ class UserControllerTest {
             User deletedUser = new User();
             deletedUser.setId(1L);
 
-            when(userService.deleteUser(any(DeleteDTO.class))).thenReturn(deletedUser);
+            when(userService.deleteUser(any()));
 
             // Act & Assert
             mockMvc.perform(delete("/users/delete")
@@ -112,7 +112,7 @@ class UserControllerTest {
                             .content(objectMapper.writeValueAsString(deleteDTO)))
                     .andExpect(status().isAccepted());
 
-            verify(userService,times(1)).deleteUser(any(DeleteDTO.class));
+            verify(userService,times(1)).deleteUser(any());
             verifyNoMoreInteractions(userService);
         }
 

@@ -1,13 +1,15 @@
-import { NavLink } from "react-router-dom";
-
 import { TransactionsTableContainer, Table } from "./TransactionsTable.styles";
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { AddButton } from "../AddButton/AddButton";
 import { NewTransactionModal } from "../NewTransactionModal/NewTransactionModal";
-import { useTransactionsModal } from "../../hooks/useTransactionModal";
+import { useTransactions } from "../../hooks/useTransaction";
 
 export function TransactionsTable() {
-  const {handleOpenNewTransactionModal} = useTransactionsModal();
+  const {handleOpenNewTransactionModal, transactions, deleteTransaction} = useTransactions();
+
+   function handleDeleteTransaction(idTransaction:number){
+    deleteTransaction(idTransaction);
+  }
 
   return (
     <TransactionsTableContainer>
@@ -25,26 +27,28 @@ export function TransactionsTable() {
             <th>Id</th>
             <th>Sender</th>
             <th>Receiver</th>
-            <th>Amount</th>
+            <th>Value</th>
             <th>Delete</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>João Carlos</td>
-            <td>Jose Aparecido</td>
-            <td>R$1500.00</td>
-            <td>
-              <NavLink
-                to="/"
-                title="Delete"
-              >
-                <FaTrashAlt size={24} />
-              </NavLink>
-            </td>
-          </tr>
+        {transactions.map((transaction) => (
+            <tr key={`${transaction.idTransaction}`}>
+              <td>{transaction.idTransaction}</td>
+              <td>{transaction.id_sender}</td>
+              <td>{transaction.id_receiver}</td>
+              <td>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(transaction.value)}
+              </td>
+              <td onClick={()=>handleDeleteTransaction(transaction.idTransaction)}>
+                <FaTrashAlt/>
+              </td>
+            </tr>
+          ))}
           
           
         </tbody>
