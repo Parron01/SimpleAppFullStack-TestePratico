@@ -14,6 +14,7 @@ export const Form = styled.form`
   border-radius: 10px;
   width: 100%;
   max-width: 28rem;
+  position: relative;
 
   h1 {
     margin-bottom: 1.5rem;
@@ -46,19 +47,37 @@ export const Form = styled.form`
     }
   }
 
-  button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: ${props => props.theme['blue-700']};
-    color: ${props => props.theme['gray-100']};
-    border: none;
-    border-radius: 5px;
-    font-size: 1.3rem;
-    margin-top: 1rem;
-    
-    &:hover {
-        background-color: ${props => props.theme['blue-500']};
-        color: ${props => props.theme['white']};
+  `;
+
+export const LoginButton = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  background-color: ${props => props.theme['blue-700']};
+  color: ${props => props.theme['gray-100']};
+  border: none;
+  border-radius: 5px;
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  
+  &:hover {
+      background-color: ${props => props.theme['blue-500']};
+      color: ${props => props.theme['white']};
+}
+
+`
+
+export const ReturnButton = styled.button`
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.35rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: ${props=>props.theme['gray-600']};
+    color:${props=>props.theme['gray-100']} ;
+
+    transition: filter 0.2s;
+    &:hover{
+        filter: brightness(0.7);
     }
-  }
 `;

@@ -1,10 +1,22 @@
 import { FaUser, FaKey } from 'react-icons/fa';
-import { LoginContainer, Form } from './LoginUserForm.styles';
+import { LoginContainer, Form, ReturnButton, LoginButton } from './LoginUserForm.styles';
+import { useNavigate } from 'react-router-dom';
+import { IoReturnUpBackOutline } from 'react-icons/io5';
+
 
 export function LoginUserForm() {
+  const navigate = useNavigate();
+  
+  function handleReturnButton(){
+    navigate("/");
+  }
+
   return (
     <LoginContainer>
       <Form>
+      <ReturnButton onClick={handleReturnButton}>
+          <IoReturnUpBackOutline size={38} />
+        </ReturnButton>
         <h1>Login</h1>
 
         <div>
@@ -23,7 +35,7 @@ export function LoginUserForm() {
           <input id="password" type="password" placeholder="Digite sua senha" />
         </div>
 
-        <button type="submit">Entrar</button>
+        <LoginButton type="submit">Entrar</LoginButton>
       </Form>
     </LoginContainer>
   );
