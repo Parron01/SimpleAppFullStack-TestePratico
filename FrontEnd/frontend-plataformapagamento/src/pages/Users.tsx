@@ -1,10 +1,10 @@
 import { UsersTable } from "../components/UsersTable/UsersTable";
+import { UsersProvider } from "../hooks/useUsers";
 
 export function Users() {
   return (
-    <>
-    <UsersTable/>
-    
-    </>
+    <UsersProvider>
+      <UsersTable/>
+    </UsersProvider>
   );
 }

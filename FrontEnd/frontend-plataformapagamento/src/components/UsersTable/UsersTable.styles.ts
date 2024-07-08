@@ -38,20 +38,26 @@ export const Table = styled.table`
                 border-left: 0.6rem solid transparent;
                 background: ${props=>props.theme["gray-900"]};
                 color: ${props=>props.theme["blue-700"]};
-                transition: color 0.3s;
-                &:hover{
-                    color: ${props=>props.theme["blue-500"]};
+                .icon{
+                    cursor: pointer;
+                    transition: color 0.3s;
+                    &:hover{
+                        color: ${props=>props.theme["blue-500"]};
+                    }
                 }
             }
-
+            
             &:last-child{
                 width: 1.5rem;
                 border-left: 0.6rem solid transparent;
                 background: ${props=>props.theme["gray-900"]};
                 color: ${props=>props.theme["red-700"]};
-                transition: color 0.3s;
-                &:hover{
-                    color: ${props=>props.theme["red-500"]};
+                .icon{
+                    cursor: pointer;
+                    transition: color 0.3s;
+                    &:hover{
+                        color: ${props=>props.theme["red-500"]};
+                    }
                 }
             }
         }

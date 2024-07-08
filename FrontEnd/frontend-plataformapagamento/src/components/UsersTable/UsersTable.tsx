@@ -1,9 +1,16 @@
 import { NavLink } from "react-router-dom";
 import { UsersTableContainer,Table } from "./UsersTable.styles";
-import { FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrashAlt, FaIdCard, FaEnvelope, FaMoneyBill, FaUser } from 'react-icons/fa';
 import { AddButton } from "../AddButton/AddButton";
+import { useUsers } from "../../hooks/useUsers";
 
 export function UsersTable() {
+    const {users,deleteUser} = useUsers();
+ 
+  function handleDeleteUser(idUser:number){
+    deleteUser(idUser);
+  }
+
   return (
     <UsersTableContainer>
 
@@ -17,11 +24,11 @@ export function UsersTable() {
       <Table>
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Document</th>
-            <th>Email</th>
-            <th>Balance</th>
+          <th>Id</th>
+            <th><FaUser /> Name</th>
+            <th><FaIdCard /> Document</th>
+            <th><FaEnvelope /> Email</th>
+            <th><FaMoneyBill /> Balance</th>
             <th>UserType</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -29,80 +36,41 @@ export function UsersTable() {
         </thead>
 
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Jose Fernando</td>
-            <td>123.939.949-01</td>
-            <td>email@email.com</td>
-            <td>R$1500.00</td>
-            <td>Lojista</td>
+        {users.map((user)=>(
+          <tr key={`${user.id}`}>
+            <td>{user.id}</td>
+            <td>{formatName(user.firstName) + " " + formatName(user.lastName)}</td>
+            <td>{formatCPF(user.document)}</td>
+            <td>{user.email}</td>
+            <td>{new Intl.NumberFormat("pt-BR",{
+              style:"currency",
+              currency:"BRL",
+            }).format(user.balance)}</td>
+            <td>{formatName(user.userType)}</td>
             <td>
-              <NavLink
-                to="/"
-                title="Update"
-              >
-                <FaEdit size={24} />
-              </NavLink>
+                <FaEdit size={24} className="icon" />
             </td>
-            <td>
-              <NavLink
-                to="/"
-                title="Delete"
-              >
-                <FaTrashAlt size={24} />
-              </NavLink>
+            <td onClick={()=>handleDeleteUser(user.id)}>
+                <FaTrashAlt size={24} className="icon"/>
             </td>
           </tr>
-          <tr>
-            <td>1</td>
-            <td>Jose Fernando</td>
-            <td>123.939.949-01</td>
-            <td>email@email.com</td>
-            <td>R$1500.00</td>
-            <td>Lojista</td>
-            <td>
-              <NavLink
-                to="/"
-                title="Update"
-              >
-                <FaEdit size={24} />
-              </NavLink>
-            </td>
-            <td>
-              <NavLink
-                to="/"
-                title="Delete"
-              >
-                <FaTrashAlt size={24} />
-              </NavLink>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Jose Fernando</td>
-            <td>123.939.949-01</td>
-            <td>email@email.com</td>
-            <td>R$1500.00</td>
-            <td>Lojista</td>
-            <td>
-              <NavLink
-                to="/"
-                title="Update"
-              >
-                <FaEdit size={24} />
-              </NavLink>
-            </td>
-            <td>
-              <NavLink
-                to="/"
-                title="Delete"
-              >
-                <FaTrashAlt size={24} />
-              </NavLink>
-            </td>
-          </tr>
+          ))}
+          
+          
         </tbody>
       </Table>
     </UsersTableContainer>
   );
+}
+
+
+
+function formatCPF(cpf:string) {
+  // Formata o CPF na forma 112.331.551-23
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+function formatName(userType:string) {
+  // Capitaliza a primeira letra e deixa as demais minúsculas
+  return userType.charAt(0).toUpperCase() + userType.slice(1).toLowerCase();
 }

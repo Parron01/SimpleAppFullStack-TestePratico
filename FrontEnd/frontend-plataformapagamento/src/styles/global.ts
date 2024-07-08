@@ -73,6 +73,7 @@ a{
     }
 }
 
+
 .Toastify__toast--error {
     background: ${props => props.theme["red-700"]};
     color: ${props=> props.theme["gray-100"]};

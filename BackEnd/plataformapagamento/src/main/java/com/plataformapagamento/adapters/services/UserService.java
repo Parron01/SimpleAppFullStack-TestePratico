@@ -44,7 +44,7 @@ public class UserService {
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         newUser.setPassword(encryptedPassword);
         try{ this.userRepository.save(newUser); }
-        catch(DataIntegrityViolationException e){throw new DataIntegrityViolationException("Usuario já cadastrado.");}
+        catch(DataIntegrityViolationException e){throw new DataIntegrityViolationException("Usuario já cadastrado. Email ou Documento já existe.");}
 
 
         return new UserResponseDTO(newUser);
@@ -65,7 +65,7 @@ public class UserService {
         User deletedUser = this.findUserById(id);
 
         try{ this.userRepository.deleteById(id); }
-        catch(DataIntegrityViolationException e){throw new DataIntegrityViolationException("Não é possível deletar o usuario.");}
+        catch(DataIntegrityViolationException e){throw new DataIntegrityViolationException("Não é possível deletar o usuario. Pode estar relacionado a alguma transação.");}
 
         return deletedUser;
     }
