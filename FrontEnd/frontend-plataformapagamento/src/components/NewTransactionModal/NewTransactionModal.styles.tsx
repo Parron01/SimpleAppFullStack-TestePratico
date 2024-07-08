@@ -9,14 +9,20 @@ input{
     width: 100%;
     margin: 1rem 0;
     padding: 1rem;
-    background-color: ${props=>props.theme["gray-700"]};
+    background: ${props=>props.theme["gray-700"]};
     color: ${props=>props.theme["gray-300"]};
-    border: 1px solid ${props=>props.theme["gray-700"]};
     border-radius: 0.75rem;
     box-shadow: 1px 1px;
 }
+label{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
 
-button {
+`;
+
+export const SendButton = styled.button`
     width: 100%;
     padding: 0.75rem;
     background-color: ${props => props.theme['blue-700']};
@@ -24,11 +30,16 @@ button {
     border: none;
     border-radius: 5px;
     font-size: 1.3rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     
     &:hover {
         background-color: ${props => props.theme['blue-500']};
         color: ${props => props.theme['white']};
     }
-  }
-`;
+`
+    
