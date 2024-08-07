@@ -32,7 +32,11 @@ export const Form = styled.form`
     border-radius: 5px;
     font-size: 1rem;
     background-color: ${props => props.theme['gray-700']};
+    color: ${props => props.theme['gray-300']};
     border: 1px solid ${props=>props.theme['gray-600']};
+    &:focus{
+      background-color: ${props => props.theme['gray-700']};
+    }
   }
 
   label {

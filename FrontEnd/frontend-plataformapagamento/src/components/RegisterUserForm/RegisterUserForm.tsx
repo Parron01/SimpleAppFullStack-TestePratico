@@ -12,7 +12,7 @@ import {
   RegisterButton,
 } from "./RegisterUserForm.styles";
 import { IoReturnUpBackOutline } from "react-icons/io5";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { useUsers } from "../../hooks/useUsers";
 

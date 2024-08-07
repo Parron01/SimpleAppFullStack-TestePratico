@@ -4,6 +4,7 @@ import com.plataformapagamento.adapters.DTOs.ExceptionResponseDTO;
 import com.plataformapagamento.adapters.DTOs.authentication.LoginDTO;
 import com.plataformapagamento.adapters.DTOs.authentication.LoginResponseDTO;
 import com.plataformapagamento.adapters.DTOs.user.UserResponseDTO;
+import com.plataformapagamento.adapters.services.UserService;
 import com.plataformapagamento.domain.user.User;
 import com.plataformapagamento.infra.security.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,8 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private UserService userService;
 
 
     @Operation(summary = "Register a new user", description = "Create a new user with the provided details")
@@ -50,8 +53,9 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(body.document(),body.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
+        User user = userService.findUserByDocument(body.document());
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new LoginResponseDTO(token, user.getId()));
     }
 }

@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { HeaderContainer, HeaderContent } from "./Header.styles";
-import { FaSignInAlt } from 'react-icons/fa';
+import { HeaderContainer, HeaderContent, LogOutButton, SignInButton } from "./Header.styles";
+import { FaSignInAlt, FaSignOutAlt} from 'react-icons/fa';
+import { useAuth } from "../../hooks/useAuth";
 
 export function Header(){
+const {isAuthenticated, logOut} = useAuth();
+
     return(
         <>
         <HeaderContainer>
@@ -21,11 +24,23 @@ export function Header(){
                     title="MyTransactions">
                     MyTransactions</NavLink>
                 </nav>
-                <NavLink to='/login'>
-                <button>Login
-                    <FaSignInAlt/>
-                </button>
-                </NavLink>
+
+                {isAuthenticated ? (
+                    <NavLink to='/'>
+                        <LogOutButton onClick={()=>logOut()}>
+                            Log Out
+                            <FaSignOutAlt />
+                        </LogOutButton>
+                    </NavLink>
+                    ) : (
+                        <NavLink to='/login'>
+                            <SignInButton>
+                                Login
+                                <FaSignInAlt />
+                            </SignInButton>
+                        </NavLink>
+                    )}
+
             </HeaderContent>
         </HeaderContainer>
         </>

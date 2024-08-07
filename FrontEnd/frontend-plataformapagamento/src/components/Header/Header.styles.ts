@@ -37,26 +37,51 @@ export const HeaderContent = styled.div`
             }
         }
 
-    button{
-        font-size: 1.1rem;
-
-        padding: 0.7rem 3rem;
-        background: ${props=>props.theme["green-500"]};
-        color: ${props=>props.theme["gray-100"]};
-        border-radius: 0.4rem;
-        border: 1px solid ${props=>props.theme["green-700"]};
-
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        margin-right: 1rem;
-
-        transition: background 0.3s;
-        &:hover{
-            color: ${props=>props.theme["white"]};
-            background: ${props=>props.theme["green-300"]};
-        }
-    }
+    
         
 `
+
+export const SignInButton = styled.button`
+    font-size: 1.1rem;
+    
+    padding: 0.7rem 3rem;
+    background: ${props=>props.theme["green-500"]};
+    color: ${props=>props.theme["gray-100"]};
+    border-radius: 0.4rem;
+    border: 1px solid ${props=>props.theme["green-700"]};
+    
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    margin-right: 1rem;
+    
+    transition: background 0.3s;
+    &:hover{
+        color: ${props=>props.theme["white"]};
+        background: ${props=>props.theme["green-300"]};
+    }
+    `;
+
+
+export const LogOutButton = styled.button`
+font-size: 1.1rem;
+    
+    padding: 0.7rem 3rem;
+    background: ${props=>props.theme["red-500"]};
+    color: ${props=>props.theme["gray-100"]};
+    border-radius: 0.4rem;
+    border: 1px solid ${props=>props.theme["red-700"]};
+    
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    margin-right: 1rem;
+    
+    transition: background 0.3s;
+    &:hover{
+        color: ${props=>props.theme["white"]};
+        background: ${props=>props.theme["red-300"]};
+    }
+`;

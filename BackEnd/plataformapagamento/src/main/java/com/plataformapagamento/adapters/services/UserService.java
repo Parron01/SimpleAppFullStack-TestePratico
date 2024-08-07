@@ -39,6 +39,11 @@ public class UserService {
         return user;
     }
 
+    public User findUserByDocument(String document){
+        User user = this.userRepository.findUserEntityByDocument(document).orElseThrow(()-> new UserNotFoundException("Usuario não encontrado."));
+        return user;
+    }
+
     public UserResponseDTO createUser(UserRequestDTO data) throws Exception {
         User newUser = new User(data);
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
