@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findUserById(Long id);
-    UserDetails findUserByDocument(String document);
+    User findUserByDocument(String document);
     @Query("SELECT u FROM users u WHERE u.document = :document")
     Optional<User> findUserEntityByDocument(@Param("document") String document);
 }

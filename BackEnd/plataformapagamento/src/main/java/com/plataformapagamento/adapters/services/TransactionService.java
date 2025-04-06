@@ -10,6 +10,7 @@ import com.plataformapagamento.infra.exceptions.UnauthorizedTransactionException
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -80,5 +81,14 @@ public class TransactionService {
     public void deleteTransactionById(Long id) throws Exception {
         Transaction transaction = this.findById(id);
         transactionRepository.deleteById(id);
+    }
+
+    public List<TransactionResponseDTO> getTransactionsByAuthenticatedUser() {
+        // Recupera o usuário autenticado
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // Busca transações relacionadas a ele
+        List<Transaction> transactions = transactionRepository.findAllByUserId(authenticatedUser.getId());
+        // Mapeia para DTOs
+        return transactions.stream().map(TransactionResponseDTO::new).toList();
     }
 }

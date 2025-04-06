@@ -1,9 +1,11 @@
 import Modal from "react-modal";
-import { NewTransactionModalContainer, SendButton } from "./NewTransactionModal.styles";
+import { NewTransactionModalContainer, SendButton, DisabledButton, ErrorMessage } from "./NewTransactionModal.styles";
 import { useTransactions } from "../../hooks/useTransaction";
+import { useUsers } from "../../hooks/useUsers";
+import { useAuth } from "../../hooks/useAuth";
 import { IoMdClose } from "react-icons/io";
-import { FaUser, FaArrowLeft, FaMoneyBill } from "react-icons/fa"; 
-import { FormEvent, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import { FormEvent, useState, useEffect } from "react";
 
 export function NewTransactionModal() {
   const {
@@ -12,12 +14,33 @@ export function NewTransactionModal() {
     createTransaction,
   } = useTransactions();
 
+  const { users } = useUsers();
+  const { AuthenticatedUserInfo } = useAuth();
+
   const [idSender, setIdSender] = useState("");
   const [idReceiver, setIdReceiver] = useState("");
   const [value, setValue] = useState("");
+  const [userType, setUserType] = useState("");
+
+  // Preencher automaticamente o campo Sender com o usuário logado
+  useEffect(() => {
+    const loggedUser = users.find(
+      (user) => user.id.toString() === AuthenticatedUserInfo.AuthenticatedUserId
+    );
+    if (loggedUser) {
+      setIdSender(loggedUser.id.toString());
+      setUserType(loggedUser.userType);
+    }
+  }, [AuthenticatedUserInfo, users]);
 
   async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
+
+    // Impedir envio se o usuário for do tipo "LOJISTA"
+    if (userType === "LOJISTA") {
+      return;
+    }
+
     await createTransaction({
       id_sender: parseFloat(idSender),
       id_receiver: parseFloat(idReceiver),
@@ -25,7 +48,6 @@ export function NewTransactionModal() {
     });
 
     setIdReceiver("");
-    setIdSender("");
     setValue("");
     handleCloseNewTransactionModal();
   }
@@ -45,52 +67,62 @@ export function NewTransactionModal() {
         <IoMdClose size={28} />
       </button>
       <NewTransactionModalContainer onSubmit={handleCreateNewTransaction}>
-        <h1>Do Your Transaction</h1>
+        <h1>Realizar Transação</h1>
         <div className="form-group">
-          <label htmlFor="idSender">
-            <FaUser size={20} />
-            Id Sender
-          </label>
-          <input
-            id="idSender"
-            type="text"
-            placeholder="Id Sender"
-            value={idSender}
-            onChange={(event) => setIdSender(event.target.value)}
-          />
+          <label htmlFor="idSender">Remetente</label>
+          <select id="idSender" value={idSender} disabled>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.firstName} {user.lastName}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
-          <label htmlFor="idReceiver">
-            <FaUser size={20}/>
-            Id Receiver
-          </label>
-          <input
+          <label htmlFor="idReceiver">Destinatário</label>
+          <select
             id="idReceiver"
-            type="text"
-            placeholder="Id Receiver"
             value={idReceiver}
             onChange={(event) => setIdReceiver(event.target.value)}
-          />
+          >
+            <option value="">Selecione o Destinatário</option>
+            {users
+              .filter((user) => user.id.toString() !== idSender) // Excluir o usuário logado
+              .map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.firstName} {user.lastName}
+                </option>
+              ))}
+          </select>
         </div>
         <div className="form-group">
-          <label htmlFor="value">
-            <FaMoneyBill size={20}/>
-            Value
-          </label>
+          <label htmlFor="value">Valor</label>
           <input
             id="value"
             type="number"
-            placeholder="Value"
-            step={100}
+            placeholder="Digite o valor"
+            step={1}
             min={0}
             value={value}
             onChange={(event) => setValue(event.target.value)}
           />
         </div>
-        <SendButton type="submit" onClick={handleCreateNewTransaction}>
-          <FaArrowLeft />
-          Send
-        </SendButton>
+        {userType === "LOJISTA" ? (
+          <>
+            <ErrorMessage>
+              Usuário de tipo Lojista não pode fazer transação, só receber.
+            </ErrorMessage>
+            <DisabledButton>
+              <FaArrowLeft />
+              Enviar
+            </DisabledButton>
+          </>
+        ) : (
+          <SendButton type="submit">
+            <FaArrowLeft />
+            Enviar
+          </SendButton>
+        )}
       </NewTransactionModalContainer>
     </Modal>
   );

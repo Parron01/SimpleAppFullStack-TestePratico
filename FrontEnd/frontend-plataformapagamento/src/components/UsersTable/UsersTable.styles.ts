@@ -33,20 +33,6 @@ export const Table = styled.table`
                 color: ${props=>props.theme.white};
             }
 
-            &:nth-last-child(2){
-                width: 1.5rem;
-                border-left: 0.6rem solid transparent;
-                background: ${props=>props.theme["gray-900"]};
-                color: ${props=>props.theme["blue-700"]};
-                .icon{
-                    cursor: pointer;
-                    transition: color 0.3s;
-                    &:hover{
-                        color: ${props=>props.theme["blue-500"]};
-                    }
-                }
-            }
-            
             &:last-child{
                 width: 1.5rem;
                 border-left: 0.6rem solid transparent;
@@ -59,6 +45,22 @@ export const Table = styled.table`
                         color: ${props=>props.theme["red-500"]};
                     }
                 }
+            }
+        }
+
+        tr.current-user td {
+            border: 1px solid ${props=>props.theme["blue-700"]};
+            border-right: none;
+            border-left: none;
+            
+            &:first-child {
+                border-left: 2px solid ${props=>props.theme["blue-700"]};
+            }
+            
+            &:last-child {
+                border-right: 2px solid ${props=>props.theme["blue-700"]};
+                padding-left: 2.6rem;
+                background: ${props=>props.theme["gray-900"]};
             }
         }
 `;

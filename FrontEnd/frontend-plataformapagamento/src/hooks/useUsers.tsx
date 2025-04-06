@@ -8,9 +8,6 @@ import {
 import { api } from "../services/axios";
 import { toast } from "react-toastify";
 
-
-
-
 interface Users {
   id: number;
   firstName: string;
@@ -30,27 +27,37 @@ interface UsersContextData {
   users: Users[];
   createUser: (usersInput: UsersInput) => Promise<boolean>;
   deleteUser:(id: number)=>void;
+  loadUsers: () => Promise<void>;
+  isLoadingUsers: boolean;
 }
 
 const UsersContext = createContext<UsersContextData>({} as UsersContextData);
 
-
-
-
 export function UsersProvider({ children }: UsersProviderProps) {
   const [users, setUsers] = useState<Users[]>([]);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+
+  async function loadUsers() {
+    try {
+      setIsLoadingUsers(true);
+      const response = await api.get("/users");
+      setUsers(response.data);
+    } catch (e: any) {
+      const errorMessage =
+        e.response?.data?.message || "Erro ao carregar usuários.";
+      
+      if (!window.location.pathname.includes('/login')) {
+        toast.error(errorMessage);
+      }
+    } finally {
+      setIsLoadingUsers(false);
+    }
+  }
 
   useEffect(() => {
-    api
-      .get("/users")
-      .then((response) => {
-        setUsers(response.data);
-      })
-      .catch((e: any) => {
-        const errorMessage =
-          e.response?.data?.message || "Erro ao carregar transações.";
-        toast.error(errorMessage);
-      });
+    if (!window.location.pathname.includes('/login')) {
+      loadUsers();
+    }
   }, []);
 
   async function createUser(usersInput: UsersInput): Promise<boolean> {
@@ -59,7 +66,9 @@ export function UsersProvider({ children }: UsersProviderProps) {
         ...usersInput,
       });
       if (response.status === 201) {
-        setUsers([...users, response.data]);
+        if (!window.location.pathname.includes('/login')) {
+          setUsers([...users, response.data]);
+        }
         toast.success("Usuário criado com Sucesso!");
         return true;
       }
@@ -69,7 +78,7 @@ export function UsersProvider({ children }: UsersProviderProps) {
       toast.error(errorMessage);
       return false;
     }
-    return false; // Fallback para caso nenhuma condição anterior seja atendida
+    return false;
   }
 
   async function deleteUser(id: number){
@@ -91,10 +100,8 @@ export function UsersProvider({ children }: UsersProviderProps) {
       }
   }
 
-
-
   return (
-    <UsersContext.Provider value={{ users, createUser ,deleteUser}}>
+    <UsersContext.Provider value={{ users, createUser ,deleteUser, loadUsers, isLoadingUsers }}>
       {children}
     </UsersContext.Provider>
   );

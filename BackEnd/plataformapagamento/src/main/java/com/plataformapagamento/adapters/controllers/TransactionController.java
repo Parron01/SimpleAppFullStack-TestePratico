@@ -73,4 +73,19 @@ public class TransactionController {
         transactionService.deleteTransactionById(id);
         return ResponseEntity.accepted().build();
     }
+
+    @Operation(summary = "List transactions of authenticated user", description = "Retrieve transactions where user is sender or receiver")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TransactionResponseDTO.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ExceptionResponseDTO.class)))
+    })
+    @GetMapping("/myTransactions")
+    public ResponseEntity<List<TransactionResponseDTO>> listMyTransactions() {
+        List<TransactionResponseDTO> transactions = transactionService.getTransactionsByAuthenticatedUser();
+        return ResponseEntity.ok(transactions);
+    }
 }

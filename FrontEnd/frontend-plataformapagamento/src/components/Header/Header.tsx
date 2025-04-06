@@ -20,7 +20,7 @@ const {isAuthenticated, logOut} = useAuth();
                     title="Transactions">
                     Transactions</NavLink>
                     <NavLink 
-                    to="/mytransactions"
+                    to="/myTransactions"
                     title="MyTransactions">
                     MyTransactions</NavLink>
                 </nav>

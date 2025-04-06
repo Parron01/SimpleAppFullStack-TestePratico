@@ -4,14 +4,17 @@ import { GlobalStyle } from "./styles/global";
 import { Router } from "./Router";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
+import { UsersProvider } from "./hooks/useUsers";
 
 function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={defaultTheme}>
         <AuthProvider>
-          <Router />
-        <GlobalStyle />
+          <UsersProvider>
+              <Router />
+            <GlobalStyle />
+          </UsersProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

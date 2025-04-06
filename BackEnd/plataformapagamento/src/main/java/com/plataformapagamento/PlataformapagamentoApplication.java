@@ -21,8 +21,9 @@ public class PlataformapagamentoApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 						.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-						.allowedOrigins("https://localhost:3000/")
-						.allowedHeaders("*");
+						.allowedOrigins("http://localhost:3000")
+						.allowedHeaders("*")
+						.allowCredentials(true);
 			}
 		};
 	}

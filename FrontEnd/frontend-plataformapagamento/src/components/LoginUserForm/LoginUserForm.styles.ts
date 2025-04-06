@@ -17,6 +17,7 @@ export const Form = styled.form`
   position: relative;
 
   h1 {
+    text-align: center;
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
     color: ${props => props.theme['gray-300']};
@@ -24,13 +25,23 @@ export const Form = styled.form`
 
   div {
     margin-bottom: 1rem;
-  }
 
-  input {
-    width: 100%;
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      color: #333;
+
+      span {
+        margin-left: 0.5rem;
+      }
+    }
+
+    input {
+      width: 100%;
     padding: 0.75rem;
     border-radius: 5px;
-    font-size: 1rem;
+      font-size: 1rem;
     background-color: ${props => props.theme['gray-700']};
     color: ${props => props.theme['gray-300']};
     border: 1px solid ${props=>props.theme['gray-600']};
@@ -40,8 +51,8 @@ export const Form = styled.form`
   }
 
   label {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
     gap: 0.5rem;
     color: ${props => props.theme['gray-300']};
     margin-bottom: 1rem;
@@ -50,8 +61,8 @@ export const Form = styled.form`
       font-size: 1.2rem;
     }
   }
-
-  `;
+  }
+`;
 
 export const LoginButton = styled.button`
   width: 100%;
@@ -62,26 +73,63 @@ export const LoginButton = styled.button`
   border-radius: 5px;
   font-size: 1.3rem;
   margin-top: 1rem;
-  
+
   &:hover {
       background-color: ${props => props.theme['blue-500']};
       color: ${props => props.theme['white']};
-}
+  }
+`;
 
-`
+export const ErrorMessage = styled.div`
+  color: #e74c3c;
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #fdecea;
+  border-radius: 4px;
+  font-size: 0.9rem;
+`;
 
-export const ReturnButton = styled.button`
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.35rem;
-    border: 0;
-    border-radius: 0.5rem;
-    background: ${props=>props.theme['gray-600']};
-    color:${props=>props.theme['gray-100']} ;
+export const RegisterLink = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.theme['blue-500']};
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+  width: 100%;
+  cursor: pointer;
+  
+  &:hover {
+    text-decoration: underline;
+    color: ${props => props.theme['blue-700']};
+  }
+`;
 
-    transition: filter 0.2s;
-    &:hover{
-        filter: brightness(0.7);
-    }
+export const PasswordInputContainer = styled.div`
+  position: relative;
+  width: 100%;
+  
+  input {
+    width: 100%;
+    padding-right: 40px; /* Space for the eye icon */
+  }
+`;
+
+export const TogglePasswordButton = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: ${props => props.theme['gray-500']};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    color: ${props => props.theme['gray-300']};
+  }
 `;

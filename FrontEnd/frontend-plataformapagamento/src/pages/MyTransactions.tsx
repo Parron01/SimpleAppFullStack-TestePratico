@@ -1,5 +1,10 @@
+import React from 'react';
+import { MyTransactionsTable } from '../components/MyTransactions/MyTransactionsTable';
+
 export function MyTransactions() {
   return (
-    <h1>MyTransactions Page</h1>
+    <div>
+      <MyTransactionsTable />
+    </div>
   );
 }

@@ -4,19 +4,28 @@ import {
   FaKey,
   FaMoneyBill,
   FaIdCard,
+  FaEye,
+  FaEyeSlash
 } from "react-icons/fa";
 import {
   RegisterContainer,
   Form,
   ReturnButton,
   RegisterButton,
+  LoginLink,
+  PasswordInputContainer,
+  TogglePasswordButton
 } from "./RegisterUserForm.styles";
 import { IoReturnUpBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { useUsers } from "../../hooks/useUsers";
 
-export function RegisterUserForm() {
+interface RegisterUserFormProps {
+  onSwitchToLogin?: () => void;
+}
+
+export function RegisterUserForm({ onSwitchToLogin }: RegisterUserFormProps) {
   const { createUser } = useUsers();
   const navigate = useNavigate();
 
@@ -28,6 +37,7 @@ export function RegisterUserForm() {
   const [balance, setBalance] = useState("");
   const [userType, setUserType] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const checkFormValidity = () => {
@@ -67,19 +77,33 @@ export function RegisterUserForm() {
         setBalance("");
         setUserType("");
 
-        // Redirecionar para a página inicial
-        navigate("/");
+        // Se for chamado da página de login, voltar para o formulário de login
+        if (onSwitchToLogin) {
+          onSwitchToLogin();
+        } else {
+          // Redirecionar para a página inicial
+          navigate("/");
+        }
       }
     }
   }
+  
   function handleReturnButton(){
-    navigate("/");
+    if (onSwitchToLogin) {
+      onSwitchToLogin();
+    } else {
+      navigate("/");
+    }
   }
+  
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
-    <RegisterContainer onSubmit={handleCreateNewUser}>
-      <Form>
-        <ReturnButton onClick={handleReturnButton}>
+    <RegisterContainer>
+      <Form onSubmit={handleCreateNewUser}>
+        <ReturnButton onClick={handleReturnButton} type="button">
           <IoReturnUpBackOutline size={38} />
         </ReturnButton>
         <h1>Register User</h1>
@@ -140,12 +164,20 @@ export function RegisterUserForm() {
             <FaKey />
             <span>Senha</span>
           </label>
-          <input
-            type="password"
-            placeholder="Digite a senha"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
+          <PasswordInputContainer>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Digite a senha"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+            <TogglePasswordButton 
+              type="button"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </TogglePasswordButton>
+          </PasswordInputContainer>
         </div>
 
         <div>
@@ -184,6 +216,13 @@ export function RegisterUserForm() {
         >
           Registrar
         </RegisterButton>
+        
+        {onSwitchToLogin && (
+          <LoginLink type="button" onClick={onSwitchToLogin}>
+            Já possui uma conta? Faça login
+          </LoginLink>
+        )}
+        
         {!isFormValid && (
           <p style={{ color: "red", marginTop: "10px" }}>
             Você deve preencher todos os dados!

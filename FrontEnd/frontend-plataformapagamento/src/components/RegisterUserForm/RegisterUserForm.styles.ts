@@ -81,3 +81,47 @@ export const ReturnButton = styled.button`
         filter: brightness(0.7);
     }
 `;
+
+export const LoginLink = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.theme['blue-500']};
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+  width: 100%;
+  cursor: pointer;
+  
+  &:hover {
+    text-decoration: underline;
+    color: ${props => props.theme['blue-700']};
+  }
+`;
+
+export const PasswordInputContainer = styled.div`
+  position: relative;
+  width: 100%;
+  
+  input {
+    width: 100%;
+    padding-right: 40px; /* Space for the eye icon */
+  }
+`;
+
+export const TogglePasswordButton = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: ${props => props.theme['gray-500']};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    color: ${props => props.theme['gray-300']};
+  }
+`;

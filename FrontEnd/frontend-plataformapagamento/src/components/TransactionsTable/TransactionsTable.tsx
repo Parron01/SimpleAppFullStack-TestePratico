@@ -4,48 +4,43 @@ import { AddButton } from "../AddButton/AddButton";
 import { NewTransactionModal } from "../NewTransactionModal/NewTransactionModal";
 import { useTransactions } from "../../hooks/useTransaction";
 import { useUsers } from "../../hooks/useUsers";
+import { useAuth } from "../../hooks/useAuth";
 
 export function TransactionsTable() {
   const {handleOpenNewTransactionModal, transactions, deleteTransaction} = useTransactions();
   const { users } = useUsers();
-
+  
   const findUserNameById = (id: number) => {
     const user = users.find(user => user.id === id);
-    return user ? `${formatName(user.firstName)} ${formatName(user.lastName)}` : 'Usuário não encontrado';
+    return user ? `${user.firstName} ${user.lastName}` : 'Usuário não encontrado';
   };
-  function formatName(userType:string) {
-    // Capitaliza a primeira letra e deixa as demais minúsculas
-    return userType.charAt(0).toUpperCase() + userType.slice(1).toLowerCase();
-  }
 
-   function handleDeleteTransaction(idTransaction:number){
+  function handleDeleteTransaction(idTransaction:number){
     deleteTransaction(idTransaction);
   }
 
   return (
     <TransactionsTableContainer>
-
         <AddButton onClick={handleOpenNewTransactionModal}>
           <FaPlus/>New Transaction
         </AddButton>
 
-        <NewTransactionModal
-        />
+        <NewTransactionModal />
 
       <Table>
         <thead>
           <tr>
             <th>Id</th>
             <th className="thsender">
-              <FaArrowRight className="senderIcon"/> Sender
+              <FaArrowRight className="senderIcon"/> Remetente
             </th>
             <th>
-              <FaArrowLeft className="receiverIcon"/> Receiver
+              <FaArrowLeft className="receiverIcon"/> Destinatário
             </th>
             <th>
-            <FaMoneyBill className="valueIcon"/> Value
+              <FaMoneyBill className="valueIcon"/> Valor
             </th>
-            <th>Delete</th>
+            <th>Remover</th>
           </tr>
         </thead>
 
@@ -66,8 +61,6 @@ export function TransactionsTable() {
               </td>
             </tr>
           ))}
-          
-          
         </tbody>
       </Table>
     </TransactionsTableContainer>
