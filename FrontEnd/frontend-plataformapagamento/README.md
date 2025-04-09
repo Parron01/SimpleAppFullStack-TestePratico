@@ -1,46 +1,87 @@
-# Getting Started with Create React App
+# Plataforma de Pagamento - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é a interface de usuário para a Plataforma de Pagamentos Simplificada, desenvolvida como parte de um desafio técnico. A aplicação permite visualizar usuários, realizar e acompanhar transferências entre usuários comuns e lojistas.
 
-## Available Scripts
+## Funcionalidades
 
-In the project directory, you can run:
+- **Autenticação de Usuários**: Sistema de login seguro com JWT.
+- **Cadastro de Usuários**: Registro de novos usuários comuns e lojistas.
+- **Listagem de Usuários**: Visualização de todos os usuários cadastrados no sistema.
+- **Transações de Pagamento**: Realização de transferências entre usuários.
+- **Visualização de Transações**: Acompanhamento de todas as transações e transações pessoais.
+- **Interface Responsiva**: Design adaptado para diferentes dispositivos.
+- **Validação por Tipo de Usuário**: Lojistas podem apenas receber, não enviar dinheiro.
 
-### `npm start`
+## Tecnologias Utilizadas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Linguagem**: TypeScript
+- **Framework**: React (Create React App)
+- **Estilização**: Styled Components
+- **Roteamento**: React Router DOM
+- **Requisições HTTP**: Axios
+- **Notificações**: React Toastify
+- **Modal**: React Modal
+- **Gerenciamento de Estado**: Context API
+- **Autenticação**: JWT (armazenado em cookies)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Pré-requisitos
 
-### `npm test`
+Para executar este projeto localmente, certifique-se de ter os seguintes pré-requisitos instalados:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Node.js**: Versão 14.0.0 ou superior
+- **npm** ou **yarn**: Gerenciadores de pacotes para Node.js
 
-### `npm run build`
+## Como Executar
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Clonar o Repositório**:
+   ```sh
+   git clone https://github.com/Parron01/SimpleAppFullStack-TestePratico.git
+   cd FrontEnd/frontend-plataformapagamento
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Instalar Dependências**:
+   ```sh
+   npm install
+   # ou
+   yarn install
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **Configurar a API**:
+   - **Importante**: Antes de executar o projeto, você precisa configurar a URL da API.
+   - Abra o arquivo `src/services/axios.ts` e altere a baseURL para o endereço onde o backend está rodando:
+     ```typescript
+     export const api = axios.create({
+        baseURL: 'http://localhost:8080', // Altere para sua URL local
+     });
+     ```
 
-### `npm run eject`
+4. **Iniciar a Aplicação**:
+   ```sh
+   npm start
+   # ou
+   yarn start
+   ```
+   - O aplicativo será executado em modo de desenvolvimento.
+   - Abra [http://localhost:3000](http://localhost:3000) para visualizá-lo no navegador.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+5. **Construir para Produção**:
+   ```sh
+   npm run build
+   # ou
+   yarn build
+   ```
+   - Cria a versão de produção otimizada na pasta `build`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Estrutura do Projeto
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- **src/components/**: Componentes React reutilizáveis
+- **src/hooks/**: Custom hooks para lógica compartilhada
+- **src/styles/**: Estilos globais e temas
+- **src/services/**: Serviços para comunicação com a API
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Recursos Adicionais
 
-## Learn More
+- **Tema Personalizado**: Esquema de cores consistente através da aplicação
+- **Feedback Visual**: Notificações e validações para ações do usuário
+- **Tabelas Interativas**: Visualização clara de usuários e transações
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
