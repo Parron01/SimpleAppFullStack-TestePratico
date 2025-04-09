@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: simpleapp-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: picpay_simplificado
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+  backend:
+    build:
+      context: ./BackEnd/plataformapagamento
+    container_name: simpleapp-backend
+    restart: always
+    env_file:
+      - ./BackEnd/plataformapagamento/.env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/picpay_simplificado
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+    depends_on:
+      - db
+    networks:
+      - app-net
+
+  frontend:
+    build:
+      context: ./FrontEnd/frontend-plataformapagamento
+    container_name: simpleapp-frontend
+    restart: always
+    ports:
+      - "3001:80" # usado pelo nginx-proxy
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+volumes:
+  db-data:
+
+networks:
+  app-net:
+    driver: bridge
