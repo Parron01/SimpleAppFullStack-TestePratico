@@ -35,8 +35,6 @@ services:
       context: ./FrontEnd/frontend-plataformapagamento
     container_name: simpleapp-frontend
     restart: always
-    ports:
-      - "3001:80" # usado pelo nginx-proxy
     depends_on:
       - backend
     networks:
