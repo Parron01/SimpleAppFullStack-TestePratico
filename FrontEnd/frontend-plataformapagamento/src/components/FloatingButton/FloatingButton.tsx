@@ -6,8 +6,7 @@ export function FloatingButton() {
   return (
     <FloatingButtonContainer 
       href="https://parron01.com/" 
-      target="_blank" 
-      rel="noopener noreferrer"
+      // Removidos os atributos target e rel para que o link abra na mesma página
     >
       <img 
         src={IconImage} 
