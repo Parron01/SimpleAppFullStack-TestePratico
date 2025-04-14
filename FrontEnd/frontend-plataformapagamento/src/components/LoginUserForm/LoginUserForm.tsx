@@ -3,6 +3,7 @@ import { LoginContainer, Form, LoginButton, ErrorMessage, RegisterLink, Password
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { FormEvent, useState } from 'react';
+import { FloatingButton } from '../FloatingButton/FloatingButton';
 
 interface LoginUserFormProps {
   onSwitchToRegister: () => void;
@@ -93,6 +94,7 @@ export function LoginUserForm({ onSwitchToRegister }: LoginUserFormProps) {
           Não tem uma conta? Registre-se aqui
         </RegisterLink>
       </Form>
+      <FloatingButton/>
     </LoginContainer>
   );
 }

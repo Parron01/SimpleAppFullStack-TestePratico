@@ -42,9 +42,6 @@ export function MyTransactionsTable() {
     fetchMyTransactions();
   }, [AuthenticatedUserInfo.token]);
 
-  if (!users || users.length === 0) {
-    return <p>Carregando usuários...</p>;
-  }
 
   return (
     <TransactionsTableContainer>
