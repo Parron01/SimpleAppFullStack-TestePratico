@@ -94,7 +94,7 @@ export function LoginUserForm({ onSwitchToRegister }: LoginUserFormProps) {
           Não tem uma conta? Registre-se aqui
         </RegisterLink>
       </Form>
-      <FloatingButton/>
+      {/* <FloatingButton/> */}
     </LoginContainer>
   );
 }

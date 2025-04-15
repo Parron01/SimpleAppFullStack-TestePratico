@@ -2,7 +2,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export const api = axios.create({
-    baseURL: 'https://simpleapp.parron01.com/api',
+    // baseURL: 'https://simpleapp.parron01.com/api',
+    baseURL: 'http://localhost:8080',
 });
 
 // Mapeamento de quais endpoints são públicos

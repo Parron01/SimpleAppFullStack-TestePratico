@@ -7,7 +7,7 @@ export function DefaultLayout(){
         <div>
             <Header/>
             <Outlet/>
-            <FloatingButton />
+            {/* <FloatingButton /> */}
         </div>
     );
 }

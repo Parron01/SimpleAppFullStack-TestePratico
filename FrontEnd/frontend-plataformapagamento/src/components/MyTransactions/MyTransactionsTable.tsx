@@ -74,7 +74,10 @@ export function MyTransactionsTable() {
 
   const handleRefresh = () => {
     // Quando o usuário clica em atualizar, mostramos o toast
-    fetchMyTransactions(true);
+    fetchMyTransactions(true).then(() => {
+      // Após o fetch ser concluído, recarrega a página do navegador
+      window.location.reload();
+    });
   };
 
   return (
